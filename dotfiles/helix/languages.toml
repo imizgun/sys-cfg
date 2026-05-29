@@ -1,0 +1,23 @@
+[[language]]
+name = "rust"
+auto-format = true
+language-servers = ["rust-analyzer"]
+
+[language-server.rust-analyzer]
+command = "rust-analyzer"
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+[language-server.rust-analyzer.config.inlayHints.typeHints]
+enable = true
+hideInferredTypes = false
+
+[language-server.rust-analyzer.config.inlayHints.parameterHints]
+enable = true
+
+[language-server.rust-analyzer.config.inlayHints.chainingHints]
+enable = true
+
+[language-server.rust-analyzer.config.inlayHints.closureReturnTypeHints]
+enable = "always"

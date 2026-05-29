@@ -1,0 +1,47 @@
+    window-rule {
+        geometry-corner-radius 20 // Set every window radius to 20
+        clip-to-geometry true
+    }
+
+    window-rule {
+        match app-id="Alacritty"
+        match app-id="com.mitchellh.ghostty"
+
+        opacity 0.8
+
+        background-effect {
+            blur true
+        }
+    }
+
+    window-rule {
+        match app-id="org.telegram.desktop*"
+
+        opacity 0.85
+
+        background-effect {
+            blur true
+        }
+    }
+
+    window-rule {
+        match app-id="org.telegram.desktop*" is-active=true
+
+        opacity 0.8
+    }
+
+    layer-rule {
+        match namespace="^noctalia-wallpaper*"
+        place-within-backdrop true
+    }
+
+    layer-rule {
+        match namespace="^noctalia-(background|launcher-overlay|dock)-.*$"
+        background-effect {
+            xray false
+            blur true
+        }
+        opacity 0.8
+
+}
+
