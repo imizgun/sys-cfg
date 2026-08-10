@@ -23,7 +23,7 @@ modules/system/                     things that apply system-wide, need root, or
   hardware/                        device-level enablement
     audio.nix                      PipeWire + rtkit
     bluetooth.nix                  hardware.bluetooth
-  desktop/                         the graphical session
+  E/                         the graphical session
     niri.nix                       niri (compositor), greetd (login manager), dconf
   packages.nix                     CLI tools every account on the machine gets
 

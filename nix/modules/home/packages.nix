@@ -19,6 +19,7 @@
 
     # desktop shell for niri
     noctalia
+    xwayland-satellite
 
     # terminal (bound to Mod+T in the niri dotfiles)
     ghostty

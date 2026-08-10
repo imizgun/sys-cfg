@@ -9,6 +9,7 @@
 
     # desktop: the graphical session
     ./desktop/niri.nix
+    ./desktop/steam.nix
 
     # theme: appearance, shared across GTK/niri/cursor
     ./theme/cursor.nix

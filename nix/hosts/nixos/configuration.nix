@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -18,6 +18,8 @@
 
     # desktop: the graphical session
     ../../modules/system/desktop/niri.nix
+    ../../modules/system/desktop/steam.nix
+    ../../modules/system/desktop/xwayland.nix
 
     ../../modules/system/packages.nix
   ];
@@ -26,4 +28,6 @@
   # for stateful data were taken. Leave it at the release of the first
   # install of this system — see configuration.nix(5).
   system.stateVersion = "26.05";
+  
+  boot.kernelPackages = inputs.kernel-nixpkgs.legacyPackages.${pkgs.system}.linuxPackages_latest;
 }

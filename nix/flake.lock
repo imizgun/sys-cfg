@@ -41,6 +41,22 @@
         "type": "github"
       }
     },
+    "kernel-nixpkgs": {
+      "locked": {
+        "lastModified": 1785571196,
+        "narHash": "sha256-KoTsyMQqnXQZq8deCEnu4QkyldkwH/bpMMhUcfMdGIw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "148bab9c1c3c53136ecb44a6ea356a0ed5b39b06",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "148bab9",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1786106723,
@@ -110,6 +126,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "kernel-nixpkgs": "kernel-nixpkgs",
         "nixpkgs": "nixpkgs",
         "nls": "nls",
         "sonora": "sonora",
