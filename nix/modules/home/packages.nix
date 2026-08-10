@@ -18,9 +18,11 @@
 
     # terminal (bound to Mod+T in the niri dotfiles)
     ghostty
+    kitty-themes
 
     # dev tools
     bun
     claude-code
+    nil
   ];
 }

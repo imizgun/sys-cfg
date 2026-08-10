@@ -17,8 +17,8 @@
     };
 
     iconTheme = {
-      package = pkgs.papirus-icon-theme;
-      name = "Papirus-Dark";
+      package = pkgs.adwaita-icon-theme;
+      name = "Adwaita";
     };
 
     colorScheme = "dark";
