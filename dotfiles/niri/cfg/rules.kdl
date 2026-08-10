@@ -7,8 +7,9 @@
         match app-id="Alacritty"
         match app-id="com.mitchellh.ghostty"
         match app-id="kitty"
+        match app-id="sonora"
 
-        opacity 0.8
+        opacity 0.75
 
         background-effect {
             blur true
@@ -17,6 +18,7 @@
 
     window-rule {
         match app-id="org.telegram.desktop*"
+        match app-id="org.gnome.Nautilus"
 
         opacity 0.85
 
