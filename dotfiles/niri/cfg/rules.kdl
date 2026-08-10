@@ -30,18 +30,25 @@
         opacity 0.8
     }
 
+    // v5 layer-shell namespaces (verified against noctalia-dev/noctalia source:
+    // src/shell/{wallpaper,panel,dock,bar,notification,osd,backdrop}/*.cpp)
     layer-rule {
-        match namespace="^noctalia-wallpaper*"
+        match namespace="^noctalia-wallpaper$"
         place-within-backdrop true
     }
 
     layer-rule {
-        match namespace="^noctalia-(background|launcher-overlay|dock)-.*$"
+        match namespace="^noctalia-(panel|attached-panel|dock|bar-.*|notification|osd|backdrop)$"
         background-effect {
             xray false
             blur true
         }
         opacity 0.8
+    }
 
-}
+    // The v5 settings window is a real toplevel, not a layer surface.
+    window-rule {
+        match app-id="dev.noctalia.Noctalia"
+        open-floating true
+    }
 

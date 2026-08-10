@@ -1,4 +1,5 @@
 // ────────────── Startup Applications ──────────────
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-at-startup
 
-    spawn-sh-at-startup "qs -c noctalia-shell"
+    // v5 is a native binary, not launched through quickshell anymore.
+    spawn-at-startup "noctalia"
