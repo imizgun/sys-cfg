@@ -7,6 +7,7 @@
     ./helix.nix
     ./niri.nix
     ./packages.nix
+    ./cursor.nix
   ];
 
   home.username = "vkabaczko";

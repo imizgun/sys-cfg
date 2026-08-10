@@ -5,6 +5,7 @@
     # browsers
     firefox
     inputs.zen-browser.packages.${pkgs.system}.default
+    google-chrome # bound to Mod+B in the niri dotfiles
 
     # editors
     zed-editor
