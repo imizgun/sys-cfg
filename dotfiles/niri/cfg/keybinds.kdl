@@ -9,15 +9,15 @@ binds {
     Mod+Shift+ESCAPE                     { show-hotkey-overlay; }
 
     // ─── Applications ───
-    Mod+T                               hotkey-overlay-title="Open Terminal: Ghostty" { spawn "ghostty"; }
+    Mod+T                               hotkey-overlay-title="Open Terminal: kitty" { spawn "kitty"; }
     Mod+R                               hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
     Mod+B                               hotkey-overlay-title="Open Browser: chrome" { spawn "google-chrome"; }
     Mod+L                               hotkey-overlay-title="Lock Screen: noctalia lock" { spawn "noctalia" "msg" "session" "lock"; }
     Mod+Shift+Q                         hotkey-overlay-title="Session Menu: noctalia session panel" { spawn "noctalia" "msg" "panel-toggle" "session"; }
-    Mod+I				{ spawn "noctalia" "msg" "settings-toggle"; }
-    Mod+SLASH				{ spawn "noctalia" "msg" "panel-toggle" "control-center"; }
+    Mod+I				                { spawn "noctalia" "msg" "settings-toggle"; }
+    Mod+SLASH				            { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
     Mod+SHIFT+S                         { spawn-sh "grim -t ppm -g \"$(slurp -d)\" - | satty --filename - --copy-command=wl-copy";  }
-    Print				{ spawn-sh "grim -t ppm -g \"$(slurp -d)\" - | satty --filename - --copy-command=wl-copy"; }
+    Print				                { spawn-sh "grim -t ppm -g \"$(slurp -d)\" - | satty --filename - --copy-command=wl-copy"; }
 
     // Please choose your own file manager.
     Mod+E                               hotkey-overlay-title="File Manager: Nautilus" { spawn "nautilus"; }
