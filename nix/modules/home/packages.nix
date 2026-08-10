@@ -28,7 +28,12 @@
     bun
     claude-code
     nil
-    nls
+    inputs.nls.packages.${pkgs.system}.default
+    nixd
     yazi
+
+    # desktop apps 
+    loupe
+    inputs.sonora.packages.${pkgs.system}.default
   ];
 }

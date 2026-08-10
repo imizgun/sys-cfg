@@ -13,7 +13,12 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nls.url = "github:nolight132/nls";
+
+    sonora.url = "github:nolight132/sonora";
   };
+
 
   outputs = { self, nixpkgs, home-manager, zen-browser, ... }@inputs:
     {

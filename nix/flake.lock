@@ -57,11 +57,81 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1785454630,
+        "narHash": "sha256-LQy14TZp77TwbQf40gg1V3jo8FwJG0jGDkAH+zRHqg8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "1559d3daa3ecc813a650b79375ea61b6741b8746",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1785692966,
+        "narHash": "sha256-vUfIeBEfpbAfZ5zjgIkYk7eHBeVfCYVjLbWnMkseYnk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "643809054d65fdd466a63e3155b8c498cb483c04",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nls": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1785543788,
+        "narHash": "sha256-jSlNx0ADW2bExGossDC1CUG48htEoawDapCiXh9aZek=",
+        "owner": "nolight132",
+        "repo": "nls",
+        "rev": "c7cfd4171f297e2f23199d2a91d6e660f20cd40f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nolight132",
+        "repo": "nls",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
+        "nls": "nls",
+        "sonora": "sonora",
         "zen-browser": "zen-browser"
+      }
+    },
+    "sonora": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1786384011,
+        "narHash": "sha256-SDRtN1aZUvB0HRpJ3/1Nan2TMwAEgnCXFl5T1EaW3fk=",
+        "owner": "nolight132",
+        "repo": "sonora",
+        "rev": "fa19a85729960d441ec5ad7d25847272169e580a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nolight132",
+        "repo": "sonora",
+        "type": "github"
       }
     },
     "zen-browser": {
