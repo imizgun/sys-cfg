@@ -11,25 +11,38 @@ flake.nix                           inputs: nixpkgs, home-manager, zen-browser
 hosts/nixos/
   configuration.nix                 host entry point: imports system modules
   hardware-configuration.nix        machine-specific, generated — don't hand-edit
+
 modules/system/                     things that apply system-wide, need root, or
                                      must exist before/outside a user session
-  boot.nix                          bootloader
-  networking.nix                    hostname, NetworkManager
-  locale.nix                        timezone, i18n, keyboard layout
-  users.nix                         the vkabaczko user account, login shell
-  desktop.nix                       niri (compositor) + greetd (login manager)
-  nix.nix                           flakes, allowUnfree, garbage collection
+  core/                             boots, networks, and identifies the machine
+    boot.nix                       bootloader
+    networking.nix                 hostname, NetworkManager
+    locale.nix                     timezone, i18n, keyboard layout
+    users.nix                      the vkabaczko user account, login shell
+    nix.nix                        flakes, allowUnfree, garbage collection
+  hardware/                        device-level enablement
+    audio.nix                      PipeWire + rtkit
+    bluetooth.nix                  hardware.bluetooth
+  desktop/                         the graphical session
+    niri.nix                       niri (compositor), greetd (login manager), dconf
+  packages.nix                     CLI tools every account on the machine gets
+
 modules/home/                       everything that runs as your user
-  home.nix                          entry point, imports the rest
-  fish.nix / kitty.nix / helix.nix  programs.<name>.enable — Home Manager owns
-                                     the dotfiles for these declaratively
-  niri.nix                          symlinks ~/niri-dotfiles/niri into ~/.config/niri
-  packages.nix                      GUI apps and CLI tools you just want on PATH
+  home.nix                         entry point, imports the rest
+  programs/                        declaratively-configured CLI tools
+    fish.nix / kitty.nix / helix.nix   programs.<name>.enable — Home Manager owns
+                                        the dotfiles for these declaratively
+  desktop/
+    niri.nix                       symlinks ~/niri-dotfiles/niri into ~/.config/niri
+  theme/                           appearance, shared across GTK/niri/cursor
+    cursor.nix                     home.pointerCursor (capitaine-cursors)
+    gtk.nix                        GTK theme/icons/dark-mode for Nautilus etc.
+  packages.nix                     GUI apps and CLI tools you just want on PATH
 ```
 
 `~/niri-dotfiles` (github.com/imizgun/niri-dotfiles) is a separate git repo, not
-vendored into this flake — `modules/home/niri.nix` just points at it on disk. Edit
-niri's KDL files there directly; a rebuild picks up the change. That's also why
+vendored into this flake — `modules/home/desktop/niri.nix` just points at it on disk.
+Edit niri's KDL files there directly; a rebuild picks up the change. That's also why
 rebuilds of this flake need `--impure` (see below): pointing at a path outside the
 flake's own tracked files breaks Nix's pure-evaluation sandbox. It also means the
 noctalia settings in `~/niri-dotfiles/noctalia/` (bar widgets, colorscheme, wallpaper
@@ -45,13 +58,16 @@ namespaces).
   `modules/home/packages.nix`, then rebuild (see below). This is the common case —
   `telegram-desktop`, `zen-browser`, `zed-editor`, `firefox` all live here.
 - **Something you want Home Manager to manage the config file for** (currently fish,
-  kitty, helix) → give it its own `modules/home/<name>.nix` with
+  kitty, helix) → give it its own `modules/home/programs/<name>.nix` with
   `programs.<name>.enable = true;` and whatever settings you want under that same
   `programs.<name>.*` namespace, then add it to the `imports` list in `home.nix`.
 - **Something that needs root, runs before login, or must be available to every user
   on the machine** (rare on a single-user laptop/desktop) → add it to
-  `environment.systemPackages` in `modules/system/desktop.nix`, or give it its own
-  `modules/system/<name>.nix` if it's a whole subsystem (a new service, etc.).
+  `environment.systemPackages` in `modules/system/packages.nix`, or give it its own
+  file under `modules/system/core/`, `hardware/`, or `desktop/` — whichever category
+  fits — if it's a whole subsystem (a new service, etc.). Adding a fourth category
+  under `modules/system/` or `modules/home/` is fine once something clearly doesn't
+  fit `core`/`hardware`/`desktop`/`programs`/`theme` — don't force a fit.
 
 Package names: search with `nix search nixpkgs <name>`. Everything in nixpkgs is
 fair game for either `home.packages` or `environment.systemPackages`.

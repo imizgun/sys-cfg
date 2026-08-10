@@ -3,12 +3,22 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/system/boot.nix
-    ../../modules/system/networking.nix
-    ../../modules/system/locale.nix
-    ../../modules/system/users.nix
-    ../../modules/system/desktop.nix
-    ../../modules/system/nix.nix
+
+    # core: boots, networks, and identifies the machine
+    ../../modules/system/core/boot.nix
+    ../../modules/system/core/networking.nix
+    ../../modules/system/core/locale.nix
+    ../../modules/system/core/users.nix
+    ../../modules/system/core/nix.nix
+
+    # hardware: device-level enablement
+    ../../modules/system/hardware/audio.nix
+    ../../modules/system/hardware/bluetooth.nix
+
+    # desktop: the graphical session
+    ../../modules/system/desktop/niri.nix
+
+    ../../modules/system/packages.nix
   ];
 
   # This value determines the NixOS release from which the default settings

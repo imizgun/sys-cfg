@@ -2,12 +2,19 @@
 
 {
   imports = [
-    ./fish.nix
-    ./kitty.nix
-    ./helix.nix
-    ./niri.nix
+    # programs: declaratively-configured CLI tools
+    ./programs/fish.nix
+    ./programs/kitty.nix
+    ./programs/helix.nix
+
+    # desktop: the graphical session
+    ./desktop/niri.nix
+
+    # theme: appearance, shared across GTK/niri/cursor
+    ./theme/cursor.nix
+    ./theme/gtk.nix
+
     ./packages.nix
-    ./cursor.nix
   ];
 
   home.username = "vkabaczko";
