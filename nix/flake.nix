@@ -28,6 +28,9 @@
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.users.vkabaczko = import ./modules/home/home.nix;
+            # Pre-existing plain files (from before this repo managed them) get
+            # renamed to *.hm-bak instead of aborting the switch.
+            home-manager.backupFileExtension = "hm-bak";
           }
         ];
       };
