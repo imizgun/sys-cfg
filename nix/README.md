@@ -23,9 +23,20 @@ modules/home/                       everything that runs as your user
   home.nix                          entry point, imports the rest
   fish.nix / kitty.nix / helix.nix  programs.<name>.enable — Home Manager owns
                                      the dotfiles for these declaratively
-  niri.nix                          niri's config.kdl, sourced from this repo
+  niri.nix                          symlinks ~/niri-dotfiles/niri into ~/.config/niri
   packages.nix                      GUI apps and CLI tools you just want on PATH
 ```
+
+`~/niri-dotfiles` (github.com/imizgun/niri-dotfiles) is a separate git repo, not
+vendored into this flake — `modules/home/niri.nix` just points at it on disk. Edit
+niri's KDL files there directly; a rebuild picks up the change. That's also why
+rebuilds of this flake need `--impure` (see below): pointing at a path outside the
+flake's own tracked files breaks Nix's pure-evaluation sandbox. It also means the
+noctalia settings in `~/niri-dotfiles/noctalia/` (bar widgets, colorscheme, wallpaper
+config) are still in v4's JSON schema and are **not** wired into this system —
+noctalia v5 uses TOML with a different schema entirely, so that's unmigrated. Niri's
+keybinds/rules/autostart *are* migrated to v5 (`noctalia msg ...` IPC, v5 layer-shell
+namespaces).
 
 ## The rule for "how do I install X?"
 
@@ -48,11 +59,11 @@ fair game for either `home.packages` or `environment.systemPackages`.
 ## Day to day
 
 ```sh
-# after editing any .nix file — apply the change
-sudo nixos-rebuild switch --flake ~/nixos-config#nixos
+# after editing any .nix file (or ~/niri-dotfiles) — apply the change
+sudo nixos-rebuild switch --flake ~/nixos-config#nixos --impure
 
 # check for eval errors without touching the running system
-sudo nixos-rebuild dry-build --flake ~/nixos-config#nixos
+sudo nixos-rebuild dry-build --flake ~/nixos-config#nixos --impure
 
 # pull newer versions of nixpkgs / home-manager / zen-browser
 nix flake update
@@ -60,6 +71,11 @@ nix flake update
 # see what changed before committing an update
 git -C ~/nixos-config diff flake.lock
 ```
+
+`--impure` is only needed because `modules/home/niri.nix` reads
+`~/niri-dotfiles` from an absolute path outside the flake. Everything else here is
+pure; if you later vendor `niri-dotfiles` as a git submodule under this repo instead,
+you can drop `--impure`.
 
 Always run `dry-build` before `switch` when you've made a change you're not sure
 about — it does the full evaluation and build but never touches your running system.
