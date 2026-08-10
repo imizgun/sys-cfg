@@ -1,5 +1,5 @@
     window-rule {
-        geometry-corner-radius 12 // Set every window radius to 20
+        geometry-corner-radius 12
         clip-to-geometry true
     }
 
@@ -8,6 +8,8 @@
         match app-id="com.mitchellh.ghostty"
         match app-id="kitty"
         match app-id="sonora"
+        match app-id="org.telegram.desktop*"
+        match app-id="org.gnome.Nautilus"
 
         opacity 0.75
 
@@ -16,25 +18,6 @@
         }
     }
 
-    window-rule {
-        match app-id="org.telegram.desktop*"
-        match app-id="org.gnome.Nautilus"
-
-        opacity 0.85
-
-        background-effect {
-            blur true
-        }
-    }
-
-    window-rule {
-        match app-id="org.telegram.desktop*" is-active=true
-
-        opacity 0.8
-    }
-
-    // v5 layer-shell namespaces (verified against noctalia-dev/noctalia source:
-    // src/shell/{wallpaper,panel,dock,bar,notification,osd,backdrop}/*.cpp)
     layer-rule {
         match namespace="^noctalia-wallpaper$"
         place-within-backdrop true
@@ -49,7 +32,6 @@
         opacity 0.8
     }
 
-    // The v5 settings window is a real toplevel, not a layer surface.
     window-rule {
         match app-id="dev.noctalia.Noctalia"
         open-floating true
