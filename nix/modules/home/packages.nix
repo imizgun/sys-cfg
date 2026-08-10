@@ -10,6 +10,10 @@
     # editors
     zed-editor
 
+    # IDEs
+    jetbrains.rust-rover
+    jetbrains.rider
+
     # chat
     telegram-desktop
 
