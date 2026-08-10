@@ -7,6 +7,5 @@
     vim
     wget
     git
-    nautilus
   ];
 }

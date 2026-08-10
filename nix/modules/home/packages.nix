@@ -32,9 +32,18 @@
     inputs.nls.packages.${pkgs.system}.default
     nixd
     yazi
+    cargo
+    rust-analyzer
+    rustc
+    gcc
+    cmake
+    python3
+    dotnet-sdk_11
+    dotnet-ef
 
-    # desktop apps 
+    # desktop apps
     loupe
+    nautilus
     inputs.sonora.packages.${pkgs.system}.default
   ];
 }
