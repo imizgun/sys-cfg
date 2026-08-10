@@ -28,5 +28,7 @@
     bun
     claude-code
     nil
+    nls
+    yazi
   ];
 }
