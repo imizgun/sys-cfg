@@ -14,6 +14,7 @@
     # hardware: device-level enablement
     ../../modules/system/hardware/audio.nix
     ../../modules/system/hardware/bluetooth.nix
+    ../../modules/system/hardware/storage.nix
 
     # desktop: the graphical session
     ../../modules/system/desktop/niri.nix
