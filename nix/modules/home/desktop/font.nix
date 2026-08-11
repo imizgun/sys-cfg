@@ -7,6 +7,9 @@
     noto-fonts-color-emoji
     liberation_ttf
     jetbrains-mono
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
   ];
 
   fonts.fontconfig = {
