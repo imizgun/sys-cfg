@@ -45,7 +45,7 @@
     # desktop apps
     loupe
     nautilus
-    inputs.sonora.packages.${pkgs.system}.default
+    inputs.sonora.packages.${pkgs.system}.sonora-bin
     obs-studio
     mpv
   ];
