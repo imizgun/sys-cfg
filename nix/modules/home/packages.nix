@@ -46,5 +46,6 @@
     loupe
     nautilus
     inputs.sonora.packages.${pkgs.system}.default
+    obs-studio
   ];
 }
