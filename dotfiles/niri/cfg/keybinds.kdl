@@ -12,7 +12,7 @@ binds {
     Mod+T                               hotkey-overlay-title="Open Terminal: kitty" { spawn "kitty"; }
     Mod+R                               hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
     Mod+B                               hotkey-overlay-title="Open Browser: chrome" { spawn "google-chrome"; }
-    Mod+L                               hotkey-overlay-title="Lock Screen: noctalia lock" { spawn "noctalia" "msg" "session" "lock"; }
+    Mod+CTRL+L                               hotkey-overlay-title="Lock Screen: noctalia lock" { spawn "noctalia" "msg" "session" "lock"; }
     Mod+Shift+Q                         hotkey-overlay-title="Session Menu: noctalia session panel" { spawn "noctalia" "msg" "panel-toggle" "session"; }
     Mod+I				                { spawn "noctalia" "msg" "settings-toggle"; }
     Mod+SLASH				            { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
@@ -51,7 +51,7 @@ binds {
     Mod+CTRL+Left                       { move-column-left; }
     Mod+CTRL+H                          { move-column-left; }
     Mod+CTRL+Right                      { move-column-right; }
-    Mod+CTRL+L                          { move-column-right; }
+    // Mod+CTRL+L                          { move-column-right; }
     // Mod+CTRL+UP                         { move-window-up; }
     Mod+CTRL+K                          { move-window-up; }
     // Mod+CTRL+Down                       { move-window-down; }
