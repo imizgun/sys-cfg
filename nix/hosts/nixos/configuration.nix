@@ -15,6 +15,8 @@
     ../../modules/system/hardware/audio.nix
     ../../modules/system/hardware/bluetooth.nix
     ../../modules/system/hardware/storage.nix
+    ../../modules/system/hardware/snapshots.nix
+    ../../modules/system/hardware/udev.nix
 
     # desktop: the graphical session
     ../../modules/system/desktop/niri.nix

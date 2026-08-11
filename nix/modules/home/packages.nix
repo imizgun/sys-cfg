@@ -40,6 +40,7 @@
     python3
     dotnet-sdk_11
     dotnet-ef
+    gh
 
     # desktop apps
     loupe

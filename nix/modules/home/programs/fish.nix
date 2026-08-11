@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   programs.fish = {
@@ -6,7 +6,15 @@
     interactiveShellInit = "set fish_greeting";
     shellAliases = {
       ls = "nls";
+      nix-rebuild = "sudo nixos-rebuild switch --flake ~/nixos-config#nixos --impure";
+      nix-update = "nix flake update --flake ~/nixos-config && sudo nixos-rebuild switch --flake ~/nixos-config#nixos --impure";
     };
+    plugins = [
+      {
+        name = "autopair";
+        src = pkgs.fishPlugins.autopair.src;
+      }
+    ];
     functions = {
       nix = ''
         if status is-interactive
