@@ -59,15 +59,15 @@
         style = "red";
         format = "([ $all_status$ahead_behind]($style))";
         conflicted = "=";
-        ahead = "⇡$count";
-        behind = "⇣$count";
-        diverged = "⇕⇡$ahead_count⇣$behind_count";
-        untracked = " $count";
-        stashed = " $count";
-        modified = " $count";
-        staged = "[ $count](green)";
-        renamed = "»$count";
-        deleted = "✘$count";
+        ahead = "⇡";
+        behind = "⇣";
+        diverged = "⇕";
+        untracked = "";
+        stashed = "";
+        modified = "";
+        staged = "[](green)";
+        renamed = "»";
+        deleted = "✘";
       };
 
       character = {
