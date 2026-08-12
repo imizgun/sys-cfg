@@ -10,6 +10,7 @@
         match app-id="sonora"
         match app-id="org.telegram.desktop*"
         match app-id="org.gnome.Nautilus"
+        match app-id="discord"
 
         opacity 0.75
 
@@ -29,7 +30,7 @@
             xray false
             blur true
         }
-        opacity 0.8
+        opacity 0.75
     }
 
     window-rule {
