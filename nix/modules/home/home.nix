@@ -6,6 +6,7 @@
     ./programs/fish.nix
     ./programs/kitty.nix
     ./programs/helix.nix
+    ./programs/direnv.nix
 
     # desktop: the graphical session
     ./desktop/niri.nix

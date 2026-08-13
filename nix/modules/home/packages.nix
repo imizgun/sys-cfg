@@ -41,6 +41,8 @@
     dotnet-sdk_11
     dotnet-ef
     gh
+    clang-tools
+    btop
 
     # desktop apps
     loupe
@@ -48,5 +50,7 @@
     inputs.sonora.packages.${pkgs.system}.sonora-bin
     obs-studio
     mpv
+    discord
+    easyeffects
   ];
 }

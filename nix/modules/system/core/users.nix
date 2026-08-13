@@ -4,7 +4,7 @@
   users.users."vkabaczko" = {
     isNormalUser = true;
     description = "Mikhail";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "dialout" ];
     shell = pkgs.fish;
   };
 
