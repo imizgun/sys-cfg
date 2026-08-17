@@ -43,11 +43,14 @@
     gh
     clang-tools
     btop
-    inputs.ricture.packages.${pkgs.system}.default
+    jq
+    slurp
+    grim
 
     # desktop apps
     loupe
     nautilus
+    inputs.ricture.packages.${pkgs.system}.default
     inputs.sonora.packages.${pkgs.system}.sonora-bin
     obs-studio
     mpv
