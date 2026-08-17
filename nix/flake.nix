@@ -18,6 +18,11 @@
     nls.url = "github:nolight132/nls";
 
     sonora.url = "github:nolight132/sonora";
+
+    ricture = {
+      url = "github:imizgun/ricture";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
 

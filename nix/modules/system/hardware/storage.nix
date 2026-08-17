@@ -11,4 +11,10 @@
   # gvfs.enable pulls in udisks2.enable, which itself pulls in
   # security.polkit.enable — no need to set either by hand.
   services.gvfs.enable = true;
+
+  fileSystems."/mnt/sda1" = {
+    device = "/dev/disk/by-uuid/92033fe1-2e9a-432b-b6e7-4369740c2196";
+    fsType = "ext4";
+    options = [ "defaults" "nofail" ];
+  };
 }

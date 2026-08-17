@@ -43,6 +43,7 @@
     gh
     clang-tools
     btop
+    inputs.ricture.packages.${pkgs.system}.default
 
     # desktop apps
     loupe
