@@ -16,8 +16,8 @@ binds {
     Mod+Shift+Q                         hotkey-overlay-title="Session Menu: noctalia session panel" { spawn "noctalia" "msg" "panel-toggle" "session"; }
     Mod+I				                { spawn "noctalia" "msg" "settings-toggle"; }
     Mod+SLASH				            { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
-    Mod+SHIFT+S                         { spawn-sh "grim -t ppm -g \"$(slurp -d)\" - | satty --filename - --copy-command=wl-copy";  }
-    Print				                { spawn-sh "grim -t ppm -g \"$(slurp -d)\" - | satty --filename - --copy-command=wl-copy"; }
+    Mod+SHIFT+S                         { spawn-sh "ricture";  }
+    Print				                { spawn-sh "ricture"; }
 
     // Please choose your own file manager.
     Mod+E                               hotkey-overlay-title="File Manager: Nautilus" { spawn "nautilus"; }
