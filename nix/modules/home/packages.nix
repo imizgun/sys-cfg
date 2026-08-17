@@ -35,6 +35,7 @@
     cargo
     rust-analyzer
     rustc
+    rustfmt
     gcc
     cmake
     python3
