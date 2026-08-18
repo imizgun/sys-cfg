@@ -47,6 +47,8 @@
     jq
     slurp
     grim
+    man
+    bat
 
     # desktop apps
     loupe
@@ -57,5 +59,6 @@
     mpv
     discord
     easyeffects
+    onlyoffice-desktopeditors
   ];
 }
