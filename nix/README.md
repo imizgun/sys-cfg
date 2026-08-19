@@ -1,14 +1,18 @@
 # nixos-config
 
-Declarative config for this machine: NixOS (system) + Home Manager (user), driven by
-one flake. Lives in `~/nixos-config`; `/etc/nixos` is a symlink to this directory so
-plain `nixos-rebuild` commands still work.
+Declarative config for multiple machines: NixOS (system) + Home Manager (user),
+driven by one flake. Lives in `~/nixos-config`; `/etc/nixos` is a symlink to this
+directory so plain `nixos-rebuild` commands still work.
+
+Each host gets its own `nixosConfigurations.<hostname>` entry in `flake.nix`, which
+also pins that host's username. Every other module reads `hostname`/`username` via
+`specialArgs` instead of hardcoding either — see "Adding a new host" below.
 
 ## Layout
 
 ```
-flake.nix                           inputs: nixpkgs, home-manager, zen-browser
-hosts/nixos/
+flake.nix                           inputs, and the per-host hostname/username list
+hosts/<hostname>/
   configuration.nix                 host entry point: imports system modules
   hardware-configuration.nix        machine-specific, generated — don't hand-edit
 
@@ -16,9 +20,9 @@ modules/system/                     things that apply system-wide, need root, or
                                      must exist before/outside a user session
   core/                             boots, networks, and identifies the machine
     boot.nix                       bootloader
-    networking.nix                 hostname, NetworkManager
+    networking.nix                 hostname (from specialArgs), NetworkManager
     locale.nix                     timezone, i18n, keyboard layout
-    users.nix                      the vkabaczko user account, login shell
+    users.nix                      the primary user account (from specialArgs), login shell
     nix.nix                        flakes, allowUnfree, garbage collection
   hardware/                        device-level enablement
     audio.nix                      PipeWire + rtkit
@@ -74,12 +78,17 @@ fair game for either `home.packages` or `environment.systemPackages`.
 
 ## Day to day
 
+`nixos-rebuild` infers the right flake output from the machine's actual hostname, so
+the same commands work unchanged on any host this flake knows about (currently
+`nixos` and `laptop`) — no need to pass `#<hostname>` unless building for a machine
+other than the one you're on.
+
 ```sh
 # after editing any .nix file (or ~/niri-dotfiles) — apply the change
-sudo nixos-rebuild switch --flake ~/nixos-config#nixos --impure
+sudo nixos-rebuild switch --flake ~/nixos-config --impure
 
 # check for eval errors without touching the running system
-sudo nixos-rebuild dry-build --flake ~/nixos-config#nixos --impure
+sudo nixos-rebuild dry-build --flake ~/nixos-config --impure
 
 # pull newer versions of nixpkgs / home-manager / zen-browser
 nix flake update
@@ -87,6 +96,17 @@ nix flake update
 # see what changed before committing an update
 git -C ~/nixos-config diff flake.lock
 ```
+
+## Adding a new host
+
+1. Add an entry to `nixosConfigurations` in `flake.nix`:
+   `<name> = mkHost { hostname = "<name>"; username = "<user>"; };`
+2. Create `hosts/<name>/configuration.nix` (copy an existing host's file — it's just
+   the module import list).
+3. Generate `hosts/<name>/hardware-configuration.nix` **on that machine**
+   (`nixos-generate-config`, or it's already there if NixOS was installed on it) and
+   copy it in — it's UUID/filesystem-specific and can't be written by hand or reused
+   from another host.
 
 `--impure` is only needed because `modules/home/niri.nix` reads
 `~/niri-dotfiles` from an absolute path outside the flake. Everything else here is

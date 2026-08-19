@@ -1,4 +1,4 @@
-{ ... }:
+{ username, ... }:
 
 {
   imports = [
@@ -20,8 +20,8 @@
     ./packages.nix
   ];
 
-  home.username = "vkabaczko";
-  home.homeDirectory = "/home/vkabaczko";
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
 
   # Matches system.stateVersion in hosts/nixos/configuration.nix — do not
   # bump this on new NixOS releases, it just pins Home Manager's own
