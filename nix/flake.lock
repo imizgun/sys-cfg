@@ -149,11 +149,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787078677,
-        "narHash": "sha256-C9vGSD+vNwm9GGFPgK9GJgtmTBDi6gTzqqqXkO2slBE=",
+        "lastModified": 1787079208,
+        "narHash": "sha256-lZs+6Cdi6wyNbgNR0lAOMVDpaeK/S2rTlqOGbFGXryk=",
         "owner": "imizgun",
         "repo": "ricture",
-        "rev": "f46ff58f5990697703df5b1f0013e3ed5f616447",
+        "rev": "4c973f44ef4f2201e58cf4ccfadf5c9a63e1788b",
         "type": "github"
       },
       "original": {

@@ -49,6 +49,7 @@
     grim
     man
     bat
+    amdgpu_top
 
     # desktop apps
     loupe
