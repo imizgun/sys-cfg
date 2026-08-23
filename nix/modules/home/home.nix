@@ -10,7 +10,6 @@
 
     # desktop: the graphical session
     ./desktop/niri.nix
-    ./desktop/noctalia.nix
     ./desktop/steam.nix
     ./desktop/font.nix
 
