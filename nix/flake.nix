@@ -40,7 +40,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit inputs username; };
+              home-manager.extraSpecialArgs = { inherit inputs hostname username; };
               home-manager.users.${username} = import ./modules/home/home.nix;
               # Pre-existing plain files (from before this repo managed them) get
               # renamed to *.hm-bak instead of aborting the switch.

@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, lib, inputs, hostname, ... }:
 
 {
   home.packages = with pkgs; [
@@ -50,6 +50,7 @@
     man
     bat
     amdgpu_top
+    upower
 
     # desktop apps
     loupe
@@ -61,5 +62,9 @@
     discord
     easyeffects
     onlyoffice-desktopeditors
+  ] ++ lib.optionals (hostname == "laptop") [
+    # photo editing, laptop only
+    rawtherapee
+    darktable
   ];
 }
