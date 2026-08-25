@@ -62,6 +62,8 @@
     discord
     easyeffects
     onlyoffice-desktopeditors
+    obsidian
+    t3code
   ] ++ lib.optionals (hostname == "laptop") [
     # photo editing, laptop only
     rawtherapee
