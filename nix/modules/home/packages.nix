@@ -64,9 +64,14 @@
     onlyoffice-desktopeditors
     obsidian
     t3code
-  ] ++ lib.optionals (hostname == "laptop") [
+  ] 
+  ++ lib.optionals (hostname == "laptop") [
     # photo editing, laptop only
     rawtherapee
     darktable
+  ]
+  ++ lib.optionals (hostname == "nixos") [
+  # games, PC only
+    deadlock-mod-manager
   ];
 }
