@@ -53,6 +53,7 @@
     upower
 
     # desktop apps
+    vicinae
     loupe
     nautilus
     inputs.ricture.packages.${pkgs.system}.default
@@ -73,5 +74,6 @@
   ++ lib.optionals (hostname == "nixos") [
   # games, PC only
     deadlock-mod-manager
+    bluez
   ];
 }
