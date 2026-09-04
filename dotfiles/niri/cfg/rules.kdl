@@ -26,6 +26,8 @@
 
     layer-rule {
         match namespace="^noctalia-(panel|attached-panel|dock|bar-.*|notification|osd|backdrop)$"
+        match namespace="vicinae"
+        
         background-effect {
             xray false
             blur true
