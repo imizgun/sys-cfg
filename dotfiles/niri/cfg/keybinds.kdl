@@ -10,7 +10,7 @@ binds {
 
     // ─── Applications ───
     Mod+T                               hotkey-overlay-title="Open Terminal: kitty" { spawn "kitty"; }
-    Mod+R                               hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+    Mod+R repeat=false                               hotkey-overlay-title="Open App Launcher: vicinae" { spawn "vicinae" "toggle"; }
     Mod+B                               hotkey-overlay-title="Open Browser: chrome" { spawn "google-chrome"; }
     Mod+CTRL+L                          hotkey-overlay-title="Lock Screen: noctalia lock" { spawn "noctalia" "msg" "session" "lock"; }
     Mod+Shift+Q                         hotkey-overlay-title="Session Menu: noctalia session panel" { spawn "noctalia" "msg" "panel-toggle" "session"; }

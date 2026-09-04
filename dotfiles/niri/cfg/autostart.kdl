@@ -7,3 +7,4 @@
     // Provides Xwayland (and $DISPLAY) for X11-only apps like Steam.
     // niri doesn't bundle Xwayland support itself.
     spawn-at-startup "xwayland-satellite"
+    spawn-at-startup "vicinae" "server"
