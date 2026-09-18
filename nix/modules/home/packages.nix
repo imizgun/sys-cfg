@@ -1,5 +1,27 @@
 { pkgs, lib, inputs, hostname, ... }:
 
+let
+  # 0.8.2 has a bug affecting us; pin back to 0.8.1 until it's fixed upstream.
+  xwayland-satellite-0-8-1 =
+    let
+      pinnedSrc = pkgs.fetchFromGitHub {
+        owner = "Supreeeme";
+        repo = "xwayland-satellite";
+        tag = "v0.8.1";
+        hash = "sha256-BUE41HjLIGPjq3U8VXPjf8asH8GaMI7FYdgrIHKFMXA=";
+      };
+    in
+    pkgs.xwayland-satellite.overrideAttrs (old: {
+      version = "0.8.1";
+      src = pinnedSrc;
+      cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+        inherit (old) pname;
+        version = "0.8.1";
+        src = pinnedSrc;
+        hash = "sha256-16L6gsvze+m7XCJlOA1lsPNELE3D364ef2FTdkh0rVY=";
+      };
+    });
+in
 {
   home.packages = with pkgs; [
     # browsers
@@ -19,7 +41,7 @@
 
     # desktop shell for niri
     noctalia
-    xwayland-satellite
+    xwayland-satellite-0-8-1
 
     # terminal (bound to Mod+T in the niri dotfiles)
     ghostty
@@ -32,13 +54,13 @@
     inputs.nls.packages.${pkgs.system}.default
     nixd
     yazi
-    cargo
-    rust-analyzer
-    rustc
-    rustfmt
+    rustup
     gcc
+    espup
+    espflash
     cmake
     python3
+    flow-control
     dotnet-sdk_11
     dotnet-ef
     gh
@@ -51,6 +73,8 @@
     bat
     amdgpu_top
     upower
+    yt-dlp
+    ffmpeg
 
     # desktop apps
     vicinae
@@ -64,7 +88,7 @@
     easyeffects
     onlyoffice-desktopeditors
     obsidian
-    t3code
+    amnezia-vpn
   ] 
   ++ lib.optionals (hostname == "laptop") [
     # photo editing, laptop only

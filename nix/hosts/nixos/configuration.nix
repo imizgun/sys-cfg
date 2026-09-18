@@ -32,5 +32,6 @@
   # install of this system — see configuration.nix(5).
   system.stateVersion = "26.05";
   
-  boot.kernelPackages = inputs.kernel-nixpkgs.legacyPackages.${pkgs.system}.linuxPackages_latest;
+  # boot.kernelPackages = inputs.kernel-nixpkgs.legacyPackages.${pkgs.system}.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
 }

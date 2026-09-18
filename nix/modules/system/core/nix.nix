@@ -1,7 +1,12 @@
-{ ... }:
+{ inputs, ... }:
 
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # Lets generic dynamically-linked Linux binaries run unmodified (e.g. Zed's
+  # auto-downloaded rust-analyzer, rustup toolchains) instead of failing with
+  # "cannot execute: required file not found".
+  programs.nix-ld.enable = true;
 
   nixpkgs.config.allowUnfree = true;
 
@@ -11,6 +16,7 @@
   # derivation on every other `nix flake update`). We don't need that
   # toolchain at all: fetch JetBrains' own prebuilt release instead.
   nixpkgs.overlays = [
+    inputs.millennium.overlays.default
     (final: prev: {
       jetbrains-mono = prev.stdenvNoCC.mkDerivation rec {
         pname = "jetbrains-mono";

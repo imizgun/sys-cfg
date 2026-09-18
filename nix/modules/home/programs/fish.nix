@@ -3,7 +3,16 @@
 {
   programs.fish = {
     enable = true;
-    interactiveShellInit = "set fish_greeting";
+    interactiveShellInit = ''
+      set fish_greeting
+
+      # espup (esp-rs Xtensa toolchain) generates this as a bash script;
+      # bass lets fish source it so PATH/LIBCLANG_PATH stay in sync across
+      # toolchain updates without hardcoding versioned paths here.
+      if test -f $HOME/export-esp.sh
+        bass source $HOME/export-esp.sh
+      end
+    '';
     shellAliases = {
       ls = "nls";
       nix-rebuild = "sudo nixos-rebuild switch --flake ~/nixos-config --impure";
@@ -13,6 +22,10 @@
       {
         name = "autopair";
         src = pkgs.fishPlugins.autopair.src;
+      }
+      {
+        name = "bass";
+        src = pkgs.fishPlugins.bass.src;
       }
     ];
     functions = {
