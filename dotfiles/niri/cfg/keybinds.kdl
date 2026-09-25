@@ -10,7 +10,7 @@ binds {
 
     // ─── Applications ───
     Mod+T                               hotkey-overlay-title="Open Terminal: kitty" { spawn "kitty"; }
-    Mod+R repeat=false                               hotkey-overlay-title="Open App Launcher: vicinae" { spawn "vicinae" "toggle"; }
+    Mod+R repeat=false                  hotkey-overlay-title="Open App Launcher: vicinae" { spawn "vicinae" "toggle"; }
     Mod+B                               hotkey-overlay-title="Open Browser: chrome" { spawn "google-chrome"; }
     Mod+CTRL+L                          hotkey-overlay-title="Lock Screen: noctalia lock" { spawn "noctalia" "msg" "session" "lock"; }
     Mod+Shift+Q                         hotkey-overlay-title="Session Menu: noctalia session panel" { spawn "noctalia" "msg" "panel-toggle" "session"; }
@@ -18,6 +18,7 @@ binds {
     Mod+SLASH				            { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
     Mod+SHIFT+S                         { spawn-sh "ricture";  }
     Print				                { spawn-sh "ricture --fullscreen"; }
+    Mod+Z repeat=false                  { spawn-sh "wayzoomy"; }
 
     // Please choose your own file manager.
     Mod+E                               hotkey-overlay-title="File Manager: Nautilus" { spawn "nautilus"; }
