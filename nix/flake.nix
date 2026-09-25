@@ -19,6 +19,8 @@
 
     sonora.url = "github:nolight132/sonora";
 
+    wayzoomy.url = "github:nolight132/wayzoomy";
+
     ricture = {
       url = "github:imizgun/ricture";
       inputs.nixpkgs.follows = "nixpkgs";

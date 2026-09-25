@@ -52,6 +52,7 @@ in
     claude-code
     nil
     inputs.nls.packages.${pkgs.system}.default
+    inputs.wayzoomy.packages.${pkgs.system}.default
     nixd
     yazi
     rustup
