@@ -35,6 +35,7 @@ in
     # IDEs
     jetbrains.rust-rover
     jetbrains.rider
+    jetbrains.idea
 
     # chat
     telegram-desktop
@@ -76,6 +77,7 @@ in
     upower
     yt-dlp
     ffmpeg
+    nodejs
 
     # desktop apps
     vicinae
@@ -90,7 +92,7 @@ in
     onlyoffice-desktopeditors
     obsidian
     amnezia-vpn
-  ] 
+  ]
   ++ lib.optionals (hostname == "laptop") [
     # photo editing, laptop only
     rawtherapee
