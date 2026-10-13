@@ -7,6 +7,7 @@
     ./programs/kitty.nix
     ./programs/helix.nix
     ./programs/direnv.nix
+    ./programs/jdk.nix
 
     # desktop: the graphical session
     ./desktop/niri.nix
