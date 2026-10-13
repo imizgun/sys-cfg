@@ -6,7 +6,7 @@
     package = pkgs.jdk25;
   };
 
-  environment.systemPackages = with pkgs; [
+  home.packages = with pkgs; [
     maven
   ];
 }
