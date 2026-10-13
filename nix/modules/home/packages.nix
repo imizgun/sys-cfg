@@ -49,6 +49,7 @@ in
 
     # dev tools
     bun
+    gnumake
     claude-code
     nil
     inputs.nls.packages.${pkgs.system}.default

@@ -17,7 +17,10 @@
 
     nls.url = "github:nolight132/nls";
 
-    sonora.url = "github:nolight132/sonora";
+    sonora = {
+      url = "github:nolight132/sonora";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     wayzoomy.url = "github:nolight132/wayzoomy";
 
