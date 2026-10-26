@@ -79,6 +79,7 @@ in
     yt-dlp
     ffmpeg
     nodejs
+    nasm
 
     # desktop apps
     vicinae
