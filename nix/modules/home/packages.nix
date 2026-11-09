@@ -59,6 +59,7 @@
     nodejs
     fzf
     nasm
+    xmake
 
     # desktop apps
     vicinae
