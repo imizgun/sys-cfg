@@ -1,0 +1,177 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[░▒▓](os_bg)\
+$os\
+[](bg:dir_bg fg:os_bg)\
+$directory\
+[](fg:dir_bg bg:git_bg)\
+$git_branch\
+$git_status\
+[](fg:git_bg bg:lang_bg)\
+$nodejs\
+$bun\
+$rust\
+$golang\
+$php\
+$c\
+$cpp\
+$dotnet\
+$python\
+${custom.venv}\
+[](fg:lang_bg bg:time_bg)\
+$time\
+[ ](fg:time_bg)\
+\n$character"""
+
+right_format = "$cmd_duration"
+palette = "emerald"
+
+[directory]
+style = "fg:dir_fg bg:dir_bg"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+[git_branch]
+symbol = ""
+style = "bg:git_bg"
+format = '[[ $symbol $branch ](fg:git_fg bg:git_bg)]($style)'
+
+[git_status]
+style = "bg:git_bg"
+format = '[[($all_status$ahead_behind )](fg:git_fg bg:git_bg)]($style)'
+
+[jj_bookmark]
+symbol = ""
+style = "bg:git_bg"
+format = '[[ $symbol $bookmark(@$remote)$diverged( \\(+$overflow_count others\\)) ](fg:git_fg bg:git_bg)]($style)'
+
+[jj_status]
+style = "bg:git_bg"
+format = '[[($all )](fg:git_fg bg:git_bg)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:lang_bg"
+format = '[[ $symbol ($version) ](fg:lang_fg bg:lang_bg)]($style)'
+
+[bun]
+symbol = ""
+style = "bg:lang_bg"
+format = '[[ $symbol ($version) ](fg:lang_fg bg:lang_bg)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:lang_bg"
+format = '[[ $symbol ($version) ](fg:lang_fg bg:lang_bg)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:lang_bg"
+format = '[[ $symbol ($version) ](fg:lang_fg bg:lang_bg)]($style)'
+
+[php]
+symbol = ""
+style = "bg:lang_bg"
+format = '[[ $symbol ($version) ](fg:lang_fg bg:lang_bg)]($style)'
+
+[c]
+symbol = ""
+style = "bg:lang_bg"
+format = '[[ $symbol ($version) ](fg:lang_fg bg:lang_bg)]($style)'
+
+[cpp]
+detect_extensions = ["cpp", "cc", "cxx", "c++", "hpp", "hh", "hxx", "h++", "tcc"]
+detect_files = ["CMakeLists.txt", "xmake.lua"]
+symbol = ""
+style = "bg:lang_bg"
+disabled = false
+format = '[[ $symbol ($version) ](fg:lang_fg bg:lang_bg)]($style)'
+
+[dotnet]
+detect_extensions = ["csproj", "fsproj", "xproj", "cs", "slnx"]
+symbol = "󰌛"
+style = "bg:lang_bg"
+format = '[[ $symbol ($version) ](fg:lang_fg bg:lang_bg)]($style)'
+
+[python]
+detect_env_vars = []
+symbol = ""
+style = "bg:lang_bg"
+format = '[[ $symbol ($version) ](fg:lang_fg bg:lang_bg)]($style)'
+
+# Own segment that opens and closes on the language background, so the
+# static separator after it stays correct whether or not a venv is active.
+[custom.venv]
+when = 'test -n "$VIRTUAL_ENV" && case "$PWD/" in "$(dirname "$VIRTUAL_ENV")"/*) true;; *) false;; esac'
+command = 'basename "$VIRTUAL_ENV"'
+shell = ["sh"]
+format = '[](fg:lang_bg bg:venv_bg)[  $output ](fg:venv_fg bg:venv_bg)[](fg:venv_bg bg:lang_bg)'
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bg:time_bg"
+format = '[[  $time ](fg:time_fg bg:time_bg)]($style)'
+
+[os]
+style = "bg:os_bg fg:os_fg"
+format = "[ $symbol ]($style)"
+disabled = false
+
+[os.symbols]
+NixOS = "󱑽"
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰀵"
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+AOSC = ""
+Arch = "󰣇"
+Artix = "󰣇"
+EndeavourOS = ""
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+Pop = ""
+
+[character]
+success_symbol = "[❯](bold prompt)"
+error_symbol = "[❯](bold red)"
+
+[cmd_duration]
+min_time = 1000
+style = "duration"
+format = "[ $duration]($style)"
+
+[palettes.emerald]
+os_bg = "#6ee7b7"
+os_fg = "#022c22"
+dir_bg = "#0d9488"
+dir_fg = "#f0fdfa"
+git_bg = "#115e59"
+git_fg = "#99f6e4"
+lang_bg = "#064e3b"
+lang_fg = "#6ee7b7"
+venv_bg = "#0e7490"
+venv_fg = "#ecfeff"
+time_bg = "#042f2e"
+time_fg = "#5eead4"
+prompt = "#34d399"
+duration = "#2dd4bf"
