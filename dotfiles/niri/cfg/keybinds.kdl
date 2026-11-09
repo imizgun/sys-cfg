@@ -1,5 +1,9 @@
 binds {
 
+    // Handled here rather than via xkb grp:win_space_toggle, so the Space
+    // press is consumed by niri and never reaches the focused app.
+    Mod+Space { switch-layout "next"; }
+
     // ────────────── Keybindings ──────────────
     // https://github.com/YaLTeR/niri/wiki/Configuration:-Key-Bindings
 
