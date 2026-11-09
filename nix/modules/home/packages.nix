@@ -58,6 +58,7 @@
     ffmpeg
     nodejs
     fzf
+    nasm
 
     # desktop apps
     vicinae
