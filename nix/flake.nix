@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     kernel-nixpkgs.url = "github:NixOS/nixpkgs/148bab9";
+    # Only for discord: nixos-unstable's 1.0.166 hardcodes libopenh264 2.5.1,
+    # which Discord's web client deletes, breaking viewing others' streams.
+    # Drop once unstable has >= 1.0.168.
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -27,6 +31,10 @@
     ricture = {
       url = "github:imizgun/ricture";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    tokativ = {
+      url = "github:nolight132/tokativ";
     };
 
     millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";

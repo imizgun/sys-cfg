@@ -35,6 +35,13 @@
         '';
         meta = prev.jetbrains-mono.meta;
       };
+
+      # cargoSetupHook now exports AWS_LC_SYS_USE_SYSTEM=1, but nixpkgs' espup
+      # doesn't list aws-lc as a dependency, so aws-lc-sys panics at build time.
+      # Drop this once espup in nixpkgs includes aws-lc in its buildInputs.
+      espup = prev.espup.overrideAttrs (old: {
+        buildInputs = old.buildInputs ++ [ final.aws-lc ];
+      });
     })
   ];
 

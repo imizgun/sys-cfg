@@ -1,27 +1,5 @@
 { pkgs, lib, inputs, hostname, ... }:
 
-let
-  # 0.8.2 has a bug affecting us; pin back to 0.8.1 until it's fixed upstream.
-  xwayland-satellite-0-8-1 =
-    let
-      pinnedSrc = pkgs.fetchFromGitHub {
-        owner = "Supreeeme";
-        repo = "xwayland-satellite";
-        tag = "v0.8.1";
-        hash = "sha256-BUE41HjLIGPjq3U8VXPjf8asH8GaMI7FYdgrIHKFMXA=";
-      };
-    in
-    pkgs.xwayland-satellite.overrideAttrs (old: {
-      version = "0.8.1";
-      src = pinnedSrc;
-      cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-        inherit (old) pname;
-        version = "0.8.1";
-        src = pinnedSrc;
-        hash = "sha256-16L6gsvze+m7XCJlOA1lsPNELE3D364ef2FTdkh0rVY=";
-      };
-    });
-in
 {
   home.packages = with pkgs; [
     # browsers
@@ -42,7 +20,7 @@ in
 
     # desktop shell for niri
     noctalia
-    xwayland-satellite-0-8-1
+    xwayland-satellite
 
     # terminal (bound to Mod+T in the niri dotfiles)
     ghostty
@@ -79,6 +57,7 @@ in
     yt-dlp
     ffmpeg
     nodejs
+    fzf
 
     # desktop apps
     vicinae
@@ -88,11 +67,14 @@ in
     inputs.sonora.packages.${pkgs.system}.sonora-bin
     obs-studio
     mpv
-    discord
+    # from nixpkgs master, see the nixpkgs-master input in flake.nix
+    (import inputs.nixpkgs-master {
+      inherit (pkgs) system;
+      config.allowUnfree = true;
+    }).discord
     easyeffects
     onlyoffice-desktopeditors
     obsidian
-    amnezia-vpn
   ]
   ++ lib.optionals (hostname == "laptop") [
     # photo editing, laptop only
@@ -101,7 +83,8 @@ in
   ]
   ++ lib.optionals (hostname == "nixos") [
   # games, PC only
-    deadlock-mod-manager
+    (pkgs.callPackage ../../pkgs/deadlock-mod-manager.nix { })
     bluez
+    supertuxkart
   ];
 }

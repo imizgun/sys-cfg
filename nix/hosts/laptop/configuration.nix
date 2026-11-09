@@ -18,6 +18,7 @@
     ../../modules/system/hardware/snapshots.nix
     ../../modules/system/hardware/udev.nix
     ../../modules/system/hardware/power.nix
+    ../../modules/system/hardware/virtualisation.nix
 
     # desktop: the graphical session
     ../../modules/system/desktop/niri.nix
