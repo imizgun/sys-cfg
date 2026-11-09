@@ -5,6 +5,7 @@
     # programs: declaratively-configured CLI tools
     ./programs/fish.nix
     ./programs/kitty.nix
+    ./programs/ghostty.nix
     ./programs/helix.nix
     ./programs/direnv.nix
     ./programs/jdk.nix
