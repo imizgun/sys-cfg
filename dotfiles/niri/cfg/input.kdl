@@ -15,6 +15,7 @@ input {
     touchpad {
         tap // Enable tap-to-click
         natural-scroll // Enable natural (macOS-style) scrolling
+        dwt // Disable touchpad while typing
     }
 
     mouse {
@@ -22,12 +23,6 @@ input {
         // uncomment the lines below.
         //accel-profile "flat"
         //accel-speed 0.0
-    }
-
-    touchpad {
-        tap
-        natural-scroll
-        dwt
     }
 
     // focus-follows-mouse // Automatically focus windows under the mouse pointer
