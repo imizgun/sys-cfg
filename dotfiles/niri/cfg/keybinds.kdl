@@ -13,7 +13,7 @@ binds {
     Mod+Shift+ESCAPE                     { show-hotkey-overlay; }
 
     // ─── Applications ───
-    Mod+T                               hotkey-overlay-title="Open Terminal: ghostty" { spawn "ghostty"; }
+    Mod+T                               hotkey-overlay-title="Open Terminal: ghostty" { spawn "ghostty" "+new-window"; }
     Mod+R repeat=false                  hotkey-overlay-title="Open App Launcher: vicinae" { spawn "vicinae" "toggle"; }
     Mod+B                               hotkey-overlay-title="Open Browser: chrome" { spawn "google-chrome"; }
     Mod+CTRL+L                          hotkey-overlay-title="Lock Screen: noctalia lock" { spawn "noctalia" "msg" "session" "lock"; }
