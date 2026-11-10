@@ -15,6 +15,7 @@ in
     settings = {
       font-family = "JetBrainsMono Nerd Font";
       font-style = "SemiBold";
+      theme = "Nord";
 
       # Always route `ghostty` launches (e.g. niri's Mod+T spawn) to the
       # running instance instead of only when started by a launcher/D-Bus.

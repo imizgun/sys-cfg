@@ -6,6 +6,7 @@
     ./programs/fish.nix
     ./programs/kitty.nix
     ./programs/ghostty.nix
+    ./programs/nautilus.nix
     ./programs/helix.nix
     ./programs/direnv.nix
     ./programs/jdk.nix
