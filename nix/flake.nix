@@ -33,10 +33,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    tokativ = {
-      url = "github:nolight132/tokativ";
-    };
-
     millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
   };
 

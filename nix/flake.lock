@@ -193,22 +193,6 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1791956154,
-        "narHash": "sha256-jBYGPi4udQ9uo4KQp9m2J0546nJVQitG15gvZSaVVAs=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "55bfb4d7437bd4e09ab7cba58a43bd68eb310044",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_5": {
-      "locked": {
         "lastModified": 1785692966,
         "narHash": "sha256-vUfIeBEfpbAfZ5zjgIkYk7eHBeVfCYVjLbWnMkseYnk=",
         "owner": "NixOS",
@@ -272,7 +256,6 @@
         "nls": "nls",
         "ricture": "ricture",
         "sonora": "sonora",
-        "tokativ": "tokativ",
         "wayzoomy": "wayzoomy",
         "zen-browser": "zen-browser"
       }
@@ -334,27 +317,9 @@
         "type": "github"
       }
     },
-    "tokativ": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_4"
-      },
-      "locked": {
-        "lastModified": 1792440101,
-        "narHash": "sha256-V5ipFtGT1rTAluVH8n6qQhgSPN4pE1C6/OJtgW0pSZ4=",
-        "owner": "nolight132",
-        "repo": "tokativ",
-        "rev": "841afcc52d630a865346deeac7c1f53c7b2422a4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nolight132",
-        "repo": "tokativ",
-        "type": "github"
-      }
-    },
     "wayzoomy": {
       "inputs": {
-        "nixpkgs": "nixpkgs_5"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1789817658,
