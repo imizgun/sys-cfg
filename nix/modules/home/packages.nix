@@ -69,6 +69,9 @@
     inputs.sonora.packages.${pkgs.system}.sonora-bin
     obs-studio
     mpv
+    photocraft
+    wordcraft
+    
     # from nixpkgs master, see the nixpkgs-master input in flake.nix
     (import inputs.nixpkgs-master {
       inherit (pkgs) system;
