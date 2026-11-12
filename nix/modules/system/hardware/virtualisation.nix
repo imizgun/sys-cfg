@@ -10,6 +10,8 @@
       # software TPM — needed for Windows 11 guests. OVMF (UEFI) firmware
       # ships with QEMU by default, no extra option required.
       swtpm.enable = true;
+      # virtiofs shared folders (virt-manager: Add Hardware → Filesystem)
+      vhostUserPackages = [ pkgs.virtiofsd ];
     };
   };
 

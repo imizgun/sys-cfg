@@ -13,7 +13,7 @@ class Virt(SysModule):
 
     @pacman.packages
     def pacman_packages(self):
-        return {"libvirt", "qemu-desktop", "swtpm", "edk2-ovmf", "dnsmasq", "virt-manager",
+        return {"libvirt", "qemu-desktop", "swtpm", "edk2-ovmf", "virtiofsd", "dnsmasq", "virt-manager",
                 "spice-gtk"}  # USB redirection to guests
 
     @systemd.units

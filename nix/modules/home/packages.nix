@@ -56,6 +56,7 @@
     fzf
     nasm
     xmake
+    virtiofsd
 
     # desktop apps
     vicinae
