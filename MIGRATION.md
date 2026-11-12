@@ -19,7 +19,7 @@ yet**. Next step: a test run in an Arch VM (see the end of this file).
 | `hardware/bluetooth.nix` | `hardware/bluetooth.py` + `etc/bluetooth/main.conf` | |
 | `hardware/power.nix` | `hardware/power.py` | |
 | `hardware/storage.nix` | `hardware/storage.py` | `/mnt/sda1` as a `.mount` unit, `nixos` host only |
-| `hardware/snapshots.nix` | `hardware/snapshots.py` + `etc/snapper/`, timer drop-in | |
+| `hardware/snapshots.nix` | `hardware/snapshots.py` + `etc/snapper/`, timer drop-in | + new: `/` pre/post snapshots via snap-pac (replaces NixOS generations, see below) |
 | `hardware/udev.nix` | `hardware/udev.py` | `qmk` (ships udev rules), `via-bin` |
 | `hardware/virtualisation.nix` | `hardware/virt.py` | |
 | `desktop/niri.nix` (system+home) | `desktop/niri.py` + `etc/greetd/config.toml` | portals/keyring that NixOS pulled implicitly are explicit |
@@ -106,6 +106,28 @@ was removed from the NixOS packages earlier.
 - [ ] `tuigreet --remember` works (greetd-tuigreet's cache dir).
 - [ ] Snapper with the partial config (as NixOS generated it).
 - [ ] `ricture-git` / `wayzoomy-git` build via decman.
+
+## Rolling back /
+
+NixOS generations are replaced by snapper snapshots of `/`: snap-pac takes a
+pre/post pair around every pacman transaction (so every decman run), the last
+10 are kept. `snapper -c root list` shows them; `snapper -c root status N..M`
+/ `undochange N..M` reverts individual files while the system still works.
+
+Full rollback when it doesn't boot (systemd-boot can't boot snapshots, so
+from the Arch ISO):
+
+```sh
+mount -o subvolid=5 /dev/<root-partition> /mnt     # btrfs top level
+mv /mnt/@ /mnt/@.broken
+btrfs subvolume snapshot /mnt/@.snapshots/<N>/snapshot /mnt/@
+```
+
+**The ESP isn't in the snapshot** (`/boot` is FAT): if the bad transaction
+updated the kernel, the restored `/` has the old modules but `/boot` the new
+kernel. Before rebooting: `arch-chroot` into the restored root (mount `/boot`)
+and run `pacman -S linux` to put the matching kernel + initramfs back.
+Delete `@.broken` once everything works.
 
 ## Testing in a VM
 

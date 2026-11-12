@@ -1,0 +1,13 @@
+# snapper config for / — managed by sys-cfg (decman/modules/hardware/snapshots.py)
+# Only snap-pac's pre/post snapshots around every pacman transaction (so every
+# decman run); no timeline. Unset keys use snapper's defaults (snapper-configs(5)).
+SUBVOLUME="/"
+FSTYPE="btrfs"
+
+TIMELINE_CREATE="no"
+TIMELINE_CLEANUP="no"
+
+# keep the last 10 pre/post snapshots, cleaned by snapper-cleanup.timer
+NUMBER_CLEANUP="yes"
+NUMBER_LIMIT="10"
+NUMBER_LIMIT_IMPORTANT="5"
