@@ -24,6 +24,7 @@ class Niri(SysModule):
             "xdg-desktop-portal-gnome",
             "xdg-desktop-portal-gtk",
             "gnome-keyring",
+            "gcr-4",  # gcr-ssh-agent (SSH_AUTH_SOCK in environment.d/10-session.conf)
             "polkit",
             # X11 apps
             "xorg-xwayland",
@@ -33,6 +34,11 @@ class Niri(SysModule):
     @systemd.units
     def units(self):
         return {"greetd.service"}
+
+    @systemd.user_units
+    def user_units(self):
+        # ssh-agent from gcr, as on NixOS (programs.ssh via gnome-keyring)
+        return {self.host.username: {"gcr-ssh-agent.socket"}}
 
 
 def module(host):

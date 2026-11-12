@@ -13,7 +13,7 @@ class Bluetooth(SysModule):
 
     @pacman.packages
     def pacman_packages(self):
-        return {"bluez", "bluez-utils"}
+        return {"bluez", "bluez-utils", "bluez-obex"}  # obex: file transfer (NixOS enables it)
 
     @systemd.units
     def units(self):

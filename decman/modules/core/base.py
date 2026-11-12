@@ -1,4 +1,4 @@
-from decman.plugins import aur, pacman
+from decman.plugins import aur, pacman, systemd
 
 from lib import SysModule, etc_file
 
@@ -30,7 +30,21 @@ class Base(SysModule):
             "vim",
             "wget",
             "git",
+            # NixOS ships these by default; Arch's base doesn't
+            "openssh",
+            "less",
+            "which",
+            "rsync",
+            "strace",
+            "xdg-utils",
+            "dosfstools",  # mkfs.vfat / fsck for the ESP
+            "e2fsprogs",   # ext4 data disk
         }
+
+    @systemd.units
+    def units(self):
+        # enabled by default on NixOS
+        return {"systemd-timesyncd.service", "fstrim.timer", "systemd-oomd.service"}
 
     @aur.packages
     def aur_packages(self):

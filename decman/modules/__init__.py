@@ -14,6 +14,7 @@ COMMON = [
     "core.boot",
     "core.locale",
     "core.networking",
+    "core.firewall",
     # hardware: device-level enablement
     "hardware.gpu",
     "hardware.audio",

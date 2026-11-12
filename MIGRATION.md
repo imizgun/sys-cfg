@@ -52,7 +52,8 @@ yet**. Next step: a test run in an Arch VM (see the end of this file).
   `linux`; switch to `linux-lts` per host if needed.
 - `dialout` → `uucp` (Arch's serial-port group); `libvirtd` group → `libvirt`.
 - `/mnt/sda1` was in the shared NixOS module (with `nofail`) — it's the PC's
-  disk, so it's now only in `hosts/nixos.py`.
+  disk, so it's now only in `hosts/nixos.py`, as `.automount` (mounted on
+  first access; a missing disk doesn't delay boot, like `nofail`).
 - .NET 11: only RC in AUR (`dotnet-sdk-preview-bin`); `extra` has 10.
   `dotnet-ef` → `dotnet tool install --global dotnet-ef`.
 - fish plugins: `fisher` + `dotfiles/fish/fish_plugins` (bass has no Arch pkg).
@@ -62,9 +63,28 @@ yet**. Next step: a test run in an Arch VM (see the end of this file).
   Store extensions are installed if missing (`STORE_EXTENSIONS`); the Raycast
   one (Google Translate) must be installed once from the UI — vicinae
   re-bundles Raycast zips on install. The `nix` extension is not carried over.
-- `JAVA_HOME` isn't exported; `archlinux-java` manages the default JDK.
+- `JAVA_HOME=/usr/lib/jvm/default` (archlinux-java's symlink) in environment.d.
 - AUR builds run as `builduser` (home in `/var/lib/builduser`) — cargo-based
   PKGBUILDs need a writable `$HOME`.
+
+### NixOS defaults made explicit
+
+Things NixOS does without being asked, found by diffing the live system
+(enabled units, system profile), not the .nix files:
+
+- packages: `openssh`, `less`, `which`, `rsync`, `strace`, `xdg-utils`,
+  `dosfstools`, `e2fsprogs` (core.base)
+- services: `systemd-timesyncd`, `fstrim.timer`, `systemd-oomd` (core.base),
+  `libvirt-guests` (hardware.virt)
+- firewall: inbound default-deny via nftables (core.firewall, `etc/nftables.conf`);
+  only `inet filter` is managed, libvirt's NAT tables are left alone
+- ssh-agent: `gcr-ssh-agent.socket` + `SSH_AUTH_SOCK` (desktop.niri, environment.d)
+- bluetooth OBEX (`bluez-obex`), SPICE USB redirection (`spice-gtk`)
+
+Deliberately not carried over: ModemManager (no modem), speech-dispatcher,
+nscd, logrotate (journald), the swap partitions (fstab, install-time).
+Pre-existing: `dotfiles/niri/cfg/keybinds.kdl` still binds `tokativ`, which
+was removed from the NixOS packages earlier.
 
 ### Dropped with Nix
 
@@ -87,6 +107,18 @@ yet**. Next step: a test run in an Arch VM (see the end of this file).
 - [ ] Snapper with the partial config (as NixOS generated it).
 - [ ] `ricture-git` / `wayzoomy-git` build via decman.
 
+## Testing in a VM
+
+- Use **vanilla Arch** (archinstall), not CachyOS: CachyOS ships its own repos
+  in pacman.conf and many explicitly installed packages (`linux-cachyos`,
+  `cachyos-settings`, …). decman would overwrite pacman.conf and **remove**
+  every explicit package the config doesn't declare — including the kernel
+  the VM boots. A CachyOS target needs its own core modules.
+- Always start with `sudo decman --source ~/sys-cfg/decman/source.py --dry-run`
+  and read what it would remove.
+- Host: name the VM `laptop` or `nixos`, or `sudo SYSCFG_HOST=laptop decman …`.
+  The user must match the host's `username` (laptop: `imizgun`, nixos: `vkabaczko`).
+
 ## Not managed (install-time, once)
 
 Partitioning and btrfs subvolumes (`@`, `@home`, …), `/etc/fstab`
@@ -100,7 +132,7 @@ passwords (`passwd`), hostname matching a `decman/hosts/<name>.py`.
 2. `git clone https://github.com/imizgun/sys-cfg ~/sys-cfg`
 3. Bootstrap decman from AUR by hand once (`git clone
    https://aur.archlinux.org/decman.git && makepkg -si`).
-4. `python3 ~/sys-cfg/decman/check.py --packages`
+4. `python3 ~/sys-cfg/decman/check.py --packages`, then a `--dry-run`
 5. `sudo decman --source ~/sys-cfg/decman/source.py` (later runs: `sudo decman`).
 6. Log in, run `sudo decman` again (user units), `fisher update` if needed.
 7. `mv ~/.local/state/noctalia/settings.toml{,.bak}` if it shadows the repo config.
