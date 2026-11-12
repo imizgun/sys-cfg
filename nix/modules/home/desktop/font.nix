@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, dotfiles, ... }:
 
 {
   home.packages = with pkgs; [
@@ -12,18 +12,12 @@
     nerd-fonts.symbols-only
   ];
 
-  fonts.fontconfig = {
-    enable = true;
+  # Keeps HM's font-dir registration (10-hm-fonts.conf, nix-only); default
+  # families and rendering live in dotfiles/fontconfig.
+  fonts.fontconfig.enable = true;
 
-    defaultFonts = {
-      sansSerif = [ "Noto Sans" ];
-      serif = [ "Noto Serif" ];
-      monospace = [ "JetBrains Mono" ];
-      emoji = [ "Noto Color Emoji" ];
-    };
-
-    antialiasing = true;
-    hinting = "none";
-    subpixelRendering = "rgb";
+  xdg.configFile."fontconfig/conf.d" = {
+    source = "${dotfiles}/fontconfig/conf.d";
+    recursive = true;
   };
 }

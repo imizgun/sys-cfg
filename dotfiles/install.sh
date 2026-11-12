@@ -18,11 +18,10 @@ link() {
 
 mkdir -p ~/.config
 
-link "$DOTFILES_DIR/niri"         ~/.config/niri
+# niri, noctalia, ghostty, helix, kitty, fish, starship, fontconfig are linked
+# by nix/ (Home Manager) — linking them here would clobber those. This script
+# goes away once decman/ takes over.
 link "$DOTFILES_DIR/alacritty"    ~/.config/alacritty
-link "$DOTFILES_DIR/noctalia"     ~/.config/noctalia
 link "$DOTFILES_DIR/spotify_player" ~/.config/spotify-player
-link "$DOTFILES_DIR/ghostty"      ~/.config/ghostty
-link "$DOTFILES_DIR/helix"        ~/.config/helix
 
 echo "Done! Run ./install.sh again if you add new config directories."

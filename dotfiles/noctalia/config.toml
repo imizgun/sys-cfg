@@ -1,0 +1,128 @@
+# noctalia v5 shared config. Loaded from ~/.config/noctalia/*.toml;
+# GUI changes go to ~/.local/state/noctalia/settings.toml as overrides.
+# Persist them: `noctalia config export` and copy the diff here.
+
+[audio]
+enable_sounds = false
+
+[bar.default]
+center = [ "media", "audio_visualizer", "workspaces" ]
+concave_edge_corners = false
+end = [ "tray", "clipboard", "network", "bluetooth", "keyboard_layout", "volume", "widget", "control-center" ]
+margin_edge = 3
+margin_ends = 4
+margin_opposite_edge = 1
+padding = 20
+radius = 20
+shadow = false
+start = [ "wallpaper", "clock", "temp", "cpu", "ram" ]
+widget_spacing = 20
+
+[desktop_widgets]
+schema_version = 2
+widget_order = []
+
+    [desktop_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [desktop_widgets.widget]
+
+[idle]
+behavior_order = [ "lock", "screen-off" ]
+
+    [idle.behavior.lock]
+    action = "lock"
+    enabled = true
+    timeout = 900.0
+
+    [idle.behavior.screen-off]
+    action = "lock_and_suspend"
+    enabled = true
+    timeout = 1200.0
+
+[location]
+auto_locate = true
+
+[lockscreen]
+transition_duration = 700
+
+[notification]
+background_opacity = 0.69999998435378075
+position = "bottom_right"
+show_actions = false
+show_app_name = false
+
+[osd.kinds]
+keyboard_layout = false
+media = false
+
+[plugin_settings."alexander/screen-toolkit"]
+panel_open_near_click = true
+panel_placement = "attached"
+record-audio-in = true
+record-audio-out = true
+record-copy-to-clipboard = true
+result_open_near_click = true
+result_placement = "attached"
+selected-ocr-lang = "eng+rus+pol"
+
+[plugins]
+enabled = [ "alexander/screen-toolkit" ]
+
+[shell]
+button_borders = false
+card_borders = false
+input_borders = false
+popup_borders = false
+popup_shadows = false
+
+    [shell.panel]
+    shadow = false
+    transparency_mode = "glass"
+
+    [shell.shadow]
+    alpha = 0.0
+
+[theme]
+builtin = "Rosé Pine"
+community_palette = "Catppuccin Frappe Sapphire"
+mode = "dark"
+source = "community"
+wallpaper_scheme = "m3-content"
+
+[widget.audio_visualizer]
+show_when_idle = true
+
+[widget.bluetooth]
+anchor = true
+
+[widget.clock]
+format = "{:%H:%M, %d %b %Y}"
+
+[widget.control-center]
+glyph = "settings-filled"
+scale = 1.05
+
+[widget.media]
+art_size = 20
+max_length = 150
+
+[widget.network]
+show_label = false
+
+[widget.sysmon]
+stat = "cpu_temp"
+
+[widget.tray]
+drawer = true
+
+[widget.widget]
+type = "alexander/screen-toolkit:widget"
+
+[widget.workspaces]
+hide_when_empty = true
+scale = 1.1000000000000001
+show_labels = false
+show_tooltip = false

@@ -35,24 +35,26 @@ modules/system/                     things that apply system-wide, need root, or
 modules/home/                       everything that runs as your user
   home.nix                         entry point, imports the rest
   programs/                        declaratively-configured CLI tools
-    fish.nix / kitty.nix / helix.nix   programs.<name>.enable — Home Manager owns
-                                        the dotfiles for these declaratively
+    fish.nix / kitty.nix / helix.nix   install + integrate; the config files
+    ghostty.nix / ...                  themselves are linked from ../dotfiles
   desktop/
     niri.nix                       symlinks dotfiles/niri into ~/.config/niri
+    noctalia.nix                   dotfiles/noctalia/{config,hosts/<host>}.toml
   theme/                           appearance, shared across GTK/niri/cursor
     cursor.nix                     home.pointerCursor (capitaine-cursors)
     gtk.nix                        GTK theme/icons/dark-mode for Nautilus etc.
   packages.nix                     GUI apps and CLI tools you just want on PATH
 ```
 
-Dotfiles live in `../dotfiles/` of the same repo; `modules/home/desktop/niri.nix`
-points at `dotfiles/niri` by relative path. Edit niri's KDL files there; a rebuild
-picks up the change. Only git-tracked files are visible to the flake — `git add`
-new files before rebuilding. The noctalia settings in `dotfiles/noctalia/` (bar widgets, colorscheme, wallpaper
-config) are still in v4's JSON schema and are **not** wired into this system —
-noctalia v5 uses TOML with a different schema entirely, so that's unmigrated. Niri's
-keybinds/rules/autostart *are* migrated to v5 (`noctalia msg ...` IPC, v5 layer-shell
-namespaces).
+Dotfiles live in `../dotfiles/` of the same repo as plain files (no Home Manager
+`settings`), so the future decman setup can reuse them as-is. Modules get the path
+as the `dotfiles` specialArg and link files with `xdg.configFile`. Only git-tracked
+files are visible to the flake — `git add` new files before rebuilding.
+
+noctalia v5 reads every `*.toml` in `~/.config/noctalia` (repo-owned:
+`config.toml` + per-host `host.toml`), then applies GUI overrides from
+`~/.local/state/noctalia/settings.toml`. To persist a GUI tweak:
+`noctalia config export` and copy the relevant section into the repo.
 
 ## The rule for "how do I install X?"
 

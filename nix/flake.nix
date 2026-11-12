@@ -51,7 +51,9 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit inputs hostname username; };
+              # `dotfiles` = ../dotfiles of this repo: plain config files that
+              # modules/home/* link into place (shared with the future decman setup).
+              home-manager.extraSpecialArgs = { inherit inputs hostname username; dotfiles = ../dotfiles; };
               home-manager.users.${username} = import ./modules/home/home.nix;
               # Pre-existing plain files (from before this repo managed them) get
               # renamed to *.hm-bak instead of aborting the switch.

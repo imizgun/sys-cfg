@@ -1,20 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, dotfiles, ... }:
 
 {
   programs.fish = {
     enable = true;
-    interactiveShellInit = ''
-      set fish_greeting
-
-      # espup (esp-rs Xtensa toolchain) generates this as a bash script;
-      # bass lets fish source it so PATH/LIBCLANG_PATH stay in sync across
-      # toolchain updates without hardcoding versioned paths here.
-      if test -f $HOME/export-esp.sh
-        bass source $HOME/export-esp.sh
-      end
-    '';
+    # Distro-agnostic shell config lives in dotfiles/fish; only nix-specific
+    # aliases/functions stay here (they go away with NixOS).
     shellAliases = {
-      ls = "nls";
       nix-rebuild = "sudo nixos-rebuild switch --flake ~/sys-cfg/nix";
       nix-update = "nix flake update --flake ~/sys-cfg/nix && sudo nixos-rebuild switch --flake ~/sys-cfg/nix";
     };
@@ -46,6 +37,12 @@
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
-    settings = builtins.fromTOML (builtins.readFile ./starship.toml);
+  };
+
+  xdg.configFile."starship.toml".source = "${dotfiles}/starship.toml";
+
+  xdg.configFile."fish" = {
+    source = "${dotfiles}/fish";
+    recursive = true;
   };
 }

@@ -22,10 +22,6 @@
     noctalia
     xwayland-satellite
 
-    # terminal (ghostty, bound to Mod+T in the niri dotfiles, comes from
-    # programs/ghostty.nix)
-    kitty-themes
-
     # dev tools
     bun
     gnumake
