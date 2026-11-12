@@ -1,5 +1,8 @@
 # NixOS → Arch (decman) migration
 
+Target: **CachyOS** on both hosts (PC: znver4 repos, laptop: v3), limine.
+The config also supports plain Arch per host (`Host(distro="arch")`).
+
 Status: `nix/` is live (this is what runs now). `decman/` is a full port that
 passes `python3 decman/check.py --packages`, but has **not been run on Arch
 yet**. Next step: a test run in an Arch VM (see the end of this file).
@@ -10,11 +13,12 @@ yet**. Next step: a test run in an Arch VM (see the end of this file).
 |---|---|---|
 | `flake.nix` `mkHost` | `hosts/<hostname>.py` → `lib.Host` | picked by `socket.gethostname()` or `SYSCFG_HOST` |
 | `modules/system/packages.nix` | `core/base.py` | + base, kernel, firmware, ucode (decman removes anything undeclared) |
-| `core/boot.nix` | `core/boot.py` | `bootctl install` once; loader entries are install-time |
+| `core/boot.nix` | `core/boot.py` | limine + limine-snapper-sync (CachyOS hosts) or systemd-boot |
+| — | `core/cachyos.py` | CachyOS hosts: keyring, mirrorlists, cachyos-settings, hooks, rate-mirrors, chwd |
 | `core/locale.nix` | `core/locale.py` | xkb layout is in `dotfiles/niri/cfg/input.kdl` |
 | `core/networking.nix` | `core/networking.py` | |
-| `core/users.nix` | `core/users.py` | groups gathered from modules' `groups()` |
-| `core/nix.nix` | `core/pacman.py` | gc → `paccache.timer`; multilib on; overlays dropped (below) |
+| `core/users.nix` | `core/users.py` | groups from modules' `groups()`, added after the package step; shell set by programs.fish |
+| `core/nix.nix` | `core/pacman.py` | gc → `paccache.timer`; multilib on; CachyOS repos per `march`; overlays dropped (below) |
 | `hardware/audio.nix` | `hardware/audio.py` | |
 | `hardware/bluetooth.nix` | `hardware/bluetooth.py` + `etc/bluetooth/main.conf` | |
 | `hardware/power.nix` | `hardware/power.py` | |
@@ -47,9 +51,13 @@ yet**. Next step: a test run in an Arch VM (see the end of this file).
   their config (`fish_variables`, …) stay out of the repo. Units, `.desktop`
   and `/etc` files are **copied** (`lib.user_file`, `lib.etc_file`) — re-run
   decman after editing those.
-- Kernel: `linux` on both hosts (NixOS: pinned latest on the PC, nixpkgs LTS
-  on the laptop). The laptop note about BlueZ on 6.12 doesn't apply to current
-  `linux`; switch to `linux-lts` per host if needed.
+- Kernel: `linux-cachyos` on CachyOS hosts, `linux` on Arch ones (NixOS: pinned
+  latest on the PC, nixpkgs LTS on the laptop).
+- Packages CachyOS ships prebuilt (`zen-browser-bin`, `claude-code`,
+  `onlyoffice-bin`) come from its repo instead of the AUR on CachyOS hosts
+  (`lib/packages.py` `CACHYOS_PREBUILT`).
+- Gaming (PC, `packages/games.py`): `proton-cachyos-slr`, gamemode (+ group),
+  mangohud, gamescope, lib32 variants.
 - `dialout` → `uucp` (Arch's serial-port group); `libvirtd` group → `libvirt`.
 - `/mnt/sda1` was in the shared NixOS module (with `nofail`) — it's the PC's
   disk, so it's now only in `hosts/nixos.py`, as `.automount` (mounted on
@@ -111,53 +119,70 @@ was removed from the NixOS packages earlier.
 
 NixOS generations are replaced by snapper snapshots of `/`: snap-pac takes a
 pre/post pair around every pacman transaction (so every decman run), the last
-10 are kept. `snapper -c root list` shows them; `snapper -c root status N..M`
-/ `undochange N..M` reverts individual files while the system still works.
+10 are kept. `snapper -c root list` shows them; `snapper -c root undochange
+N..M` reverts files while the system still works.
 
-Full rollback when it doesn't boot (systemd-boot can't boot snapshots, so
-from the Arch ISO):
+**limine (CachyOS hosts):** limine-snapper-sync adds every snapshot to the boot
+menu and keeps a copy of its kernel on the ESP, so a snapshot boots with
+matching modules. Boot it (read-only, via overlayfs), check it works, then
+`limine-snapper-restore` makes it the new `/`. Closest thing to NixOS
+generations.
+
+**systemd-boot (Arch hosts):** can't boot snapshots — roll back from the ISO:
 
 ```sh
 mount -o subvolid=5 /dev/<root-partition> /mnt     # btrfs top level
 mv /mnt/@ /mnt/@.broken
-btrfs subvolume snapshot /mnt/@.snapshots/<N>/snapshot /mnt/@
+btrfs subvolume snapshot /mnt/@.broken/.snapshots/<N>/snapshot /mnt/@
+# .snapshots is a nested subvolume, not part of the snapshot: move it over
+rmdir /mnt/@/.snapshots && mv /mnt/@.broken/.snapshots /mnt/@/
 ```
 
-**The ESP isn't in the snapshot** (`/boot` is FAT): if the bad transaction
-updated the kernel, the restored `/` has the old modules but `/boot` the new
-kernel. Before rebooting: `arch-chroot` into the restored root (mount `/boot`)
-and run `pacman -S linux` to put the matching kernel + initramfs back.
-Delete `@.broken` once everything works.
+The ESP isn't in the snapshot (`/boot` is FAT): if the bad transaction updated
+the kernel, `arch-chroot` into the restored root (mount `/boot`) and reinstall
+the kernel package before rebooting.
 
-## Testing in a VM
+## Installing CachyOS (VM first)
 
-- Use **vanilla Arch** (archinstall), not CachyOS: CachyOS ships its own repos
-  in pacman.conf and many explicitly installed packages (`linux-cachyos`,
-  `cachyos-settings`, …). decman would overwrite pacman.conf and **remove**
-  every explicit package the config doesn't declare — including the kernel
-  the VM boots. A CachyOS target needs its own core modules.
-- Always start with `sudo decman --source ~/sys-cfg/decman/source.py --dry-run`
-  and read what it would remove.
-- Host: name the VM `laptop` or `nixos`, or `sudo SYSCFG_HOST=laptop decman …`.
-  The user must match the host's `username` (laptop: `imizgun`, nixos: `vkabaczko`).
+VM (virt-manager): **CPU model `host-passthrough`** — the PC config uses the
+znver4 repos, and with the default `host-model` the guest may not see Zen 4
+instructions (AVX-512), so znver4 binaries would crash. For the laptop config
+(v3) any modern CPU model works.
+
+CachyOS installer choices:
+- Bootloader **Limine**, filesystem **btrfs** (snapper enabled if offered).
+- Desktop: **No desktop / minimal** — niri, noctalia and everything else come
+  from decman. (The installer's "Niri" edition installs `cachyos-niri-noctalia`
+  presets that would conflict with `dotfiles/`.)
+- Hostname `nixos` (PC) or `laptop`, user `vkabaczko` / `imizgun` accordingly
+  (or run with `sudo SYSCFG_HOST=<host> decman …`).
+
+Then:
+1. `git clone https://github.com/imizgun/sys-cfg ~/sys-cfg`
+2. Bootstrap decman once from the AUR: with an AUR helper if the installer
+   added one (`paru -S decman`), otherwise `git clone
+   https://aur.archlinux.org/decman.git && cd decman && makepkg -si`.
+   decman handles AUR afterwards; an undeclared paru/yay gets removed — add it
+   to a module if you want to keep it.
+3. `python3 ~/sys-cfg/decman/check.py --packages`
+4. **`sudo decman --source ~/sys-cfg/decman/source.py --dry-run`** — read the
+   "Removing" list: the installer marks many packages explicit. Anything worth
+   keeping goes into a module (or `decman.pacman.ignored_packages`); paste the
+   list to adjust the config.
+5. `sudo decman --source ~/sys-cfg/decman/source.py` (later: `sudo decman`).
+6. Log in once, `sudo decman` again (user units need a running user manager).
+7. `mv ~/.local/state/noctalia/settings.toml{,.bak}` if it shadows the repo config.
+
+On plain Arch the same steps apply after archinstall (Minimal profile,
+systemd-boot or limine, btrfs, NetworkManager); bootstrap decman with
+`git clone https://aur.archlinux.org/decman.git && makepkg -si`.
 
 ## Not managed (install-time, once)
 
-Partitioning and btrfs subvolumes (`@`, `@home`, …), `/etc/fstab`
-(`genfstab`), systemd-boot loader entries + kernel cmdline, mirrorlist,
-passwords (`passwd`), hostname matching a `decman/hosts/<name>.py`.
-
-## Install order (when the time comes)
-
-1. Base install (archinstall or manual): btrfs, systemd-boot, `base linux
-   linux-firmware amd-ucode base-devel git`, user `vkabaczko` (uid 1000) in `wheel`.
-2. `git clone https://github.com/imizgun/sys-cfg ~/sys-cfg`
-3. Bootstrap decman from AUR by hand once (`git clone
-   https://aur.archlinux.org/decman.git && makepkg -si`).
-4. `python3 ~/sys-cfg/decman/check.py --packages`, then a `--dry-run`
-5. `sudo decman --source ~/sys-cfg/decman/source.py` (later runs: `sudo decman`).
-6. Log in, run `sudo decman` again (user units), `fisher update` if needed.
-7. `mv ~/.local/state/noctalia/settings.toml{,.bak}` if it shadows the repo config.
+Partitioning and btrfs subvolumes, `/etc/fstab`, bootloader install + kernel
+cmdline (limine: `/etc/default/limine`; systemd-boot: loader entries),
+mirrorlist contents, passwords (`passwd`), hostname matching a
+`decman/hosts/<name>.py`, swap/zram.
 
 Hostnames: `nixos` is kept for continuity with `nix/`; renaming the PC means
 renaming `decman/hosts/nixos.py` and `dotfiles/noctalia/hosts/nixos.toml`.

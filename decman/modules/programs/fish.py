@@ -5,8 +5,8 @@ from lib import SysModule, link
 
 
 class Fish(SysModule):
-    """fish + starship. Plugins (autopair, bass) via fisher from fish_plugins;
-    bass has no Arch package. Login shell is set in core.users."""
+    """fish + starship, and fish as the main user's login shell. Plugins
+    (autopair, bass) via fisher from fish_plugins; bass has no Arch package."""
 
     NAME = "programs.fish"
 
@@ -25,6 +25,10 @@ class Fish(SysModule):
 
     def on_enable(self, store):
         self._fisher_update()
+
+    def after_update(self, store):
+        u = self.host.username
+        decman.sh(f'[ "$(getent passwd {u} | cut -d: -f7)" = /usr/bin/fish ] || usermod -s /usr/bin/fish {u}')
 
     def on_change(self, store):
         self._fisher_update()

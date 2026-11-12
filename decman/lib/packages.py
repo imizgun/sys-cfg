@@ -6,6 +6,11 @@ from decman.plugins import aur, pacman
 
 from lib import Host, SysModule
 
+# AUR packages that CachyOS ships prebuilt in its [cachyos] repo: on CachyOS
+# hosts they're installed with pacman instead of being built from the AUR.
+# `check.py --packages` flags new ones ("is in official repo cachyos").
+CACHYOS_PREBUILT = {"zen-browser-bin", "claude-code", "onlyoffice-bin"}
+
 
 class PackageSet(SysModule):
     """Declare a named group of packages without writing a class for it.
@@ -21,10 +26,13 @@ class PackageSet(SysModule):
         self._pacman = set(pacman)
         self._aur = set(aur)
 
+    def _prebuilt(self) -> set[str]:
+        return self._aur & CACHYOS_PREBUILT if self.host.cachyos else set()
+
     @pacman.packages
     def pacman_packages(self) -> set[str]:
-        return self._pacman
+        return self._pacman | self._prebuilt()
 
     @aur.packages
     def aur_packages(self) -> set[str]:
-        return self._aur
+        return self._aur - self._prebuilt()

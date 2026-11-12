@@ -1,6 +1,7 @@
 # sys-cfg
 
 System config and dotfiles for my machines (`nixos` — desktop, `laptop`).
+Currently NixOS; moving to CachyOS managed by decman (see MIGRATION.md).
 
 ```
 nix/        NixOS + Home Manager flake — what runs now
@@ -11,7 +12,7 @@ pkgbuilds/  PKGBUILDs for packages not in the AUR
 ```
 
 - NixOS: `sudo nixos-rebuild switch --flake ~/sys-cfg/nix` (see `nix/README.md`).
-- Arch: `sudo decman --source ~/sys-cfg/decman/source.py`.
+- CachyOS / Arch: `sudo decman --source ~/sys-cfg/decman/source.py`.
 - Check the decman side offline: `python3 decman/check.py [host] [-v] [--packages]`.
 - Migration status, decisions and TODOs: [MIGRATION.md](MIGRATION.md).
 
@@ -20,7 +21,7 @@ pkgbuilds/  PKGBUILDs for packages not in the AUR
 ```
 decman/
   source.py            entry point: picks the host, adds modules
-  hosts/<name>.py      HOST = lib.Host(hostname, username, mounts, extra_modules)
+  hosts/<name>.py      HOST = lib.Host(hostname, username, distro, march, bootloader, ...)
   lib/                 paths, SysModule base, link/link_tree/user_file/etc_file, PackageSet
   modules/
     __init__.py        COMMON module list (order = hook order)

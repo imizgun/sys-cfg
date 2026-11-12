@@ -3,7 +3,8 @@
 
     python3 decman/check.py                # all hosts
     python3 decman/check.py nixos -v       # one host, list everything
-    python3 decman/check.py --packages     # + verify names in Arch repos / AUR
+    python3 decman/check.py --packages     # + verify names in Arch(/CachyOS) repos / AUR
+    python3 decman/check.py nixos --show /etc/pacman.conf   # rendered file
 
 decman itself is replaced by a minimal stub of its public API (File, Symlink,
 Module, plugin decorators, UserManager), so this checks *our* code: imports,
@@ -30,6 +31,16 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parent
 CACHE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "sys-cfg" / "archdb"
 MIRROR = "https://geo.mirror.pkgbuild.com"
+CACHYOS_MIRROR = "https://mirror.cachyos.org/repo"
+UA = {"User-Agent": "sys-cfg-check/1.0"}  # mirror.cachyos.org rejects Python's default UA
+
+
+def fetch(url: str, dest: Path | None = None, timeout: int = 60) -> bytes:
+    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
+        data = r.read()
+    if dest is not None:
+        dest.write_bytes(data)
+    return data
 
 
 # ------------------------------------------------------------------ stub
@@ -160,11 +171,11 @@ def install_stub() -> None:
     class UserManager(Module):
         def __init__(self):
             super().__init__("usermanager")
-            self.users, self.groups_ = [], []
+            self.users, self.groups_, self.extra_groups = [], [], {}
 
         def add_user(self, u): self.users.append(u)
         def add_group(self, g): self.groups_.append(g)
-        def add_user_to_group(self, u, g): ...
+        def add_user_to_group(self, u, g): self.extra_groups.setdefault(u, set()).add(g)
 
     users.User, users.Group, users.UserManager = User, Group, UserManager
 
@@ -188,13 +199,15 @@ def load_host(hostname: str):
     finally:
         os.chdir(cwd)
         sys.path.remove(str(HERE))
+    decman.HOST = sys.modules["hosts"].load(hostname)
     return decman
 
 
 def collect(decman) -> dict:
     out = {"pacman": set(decman.pacman.packages), "aur": set(decman.aur.packages),
            "custom": set(decman.aur.custom_packages), "units": set(decman.systemd.enabled_units),
-           "user_units": {}, "paths": {}, "errors": [], "modules": [], "users": []}
+           "user_units": {}, "paths": {}, "errors": [], "modules": [], "users": [],
+           "extra_groups": {}, "host": decman.HOST, "vars": {}}
 
     def claim(path, kind, owner_mod, obj):
         if path in out["paths"]:
@@ -209,6 +222,8 @@ def collect(decman) -> dict:
         out["modules"].append(m.name)
         if hasattr(m, "users"):
             out["users"] += m.users
+            for u, g in m.extra_groups.items():
+                out["extra_groups"].setdefault(u, set()).update(g)
         for attr in dir(type(m)):
             fn = getattr(type(m), attr, None)
             kind = getattr(fn, "_check_kind", None)
@@ -222,12 +237,22 @@ def collect(decman) -> dict:
                 out[kind] |= set(val)
         for p, f in m.files().items():
             claim(p, "file", m.name, f)
+            out["vars"][p] = m.file_variables()
         for p, dd in m.directories().items():
             claim(p, "dir", m.name, dd)
         for p, s in m.symlinks().items():
             claim(p, "link", m.name, s)
-        m.file_variables()
     return out
+
+
+def render(res: dict, path: str) -> str:
+    kind, _m, obj = res["paths"][path]
+    if kind == "link":
+        return f"-> {obj if isinstance(obj, str) else obj.target}\n"
+    text = obj.content if obj.content is not None else Path(obj.source_file).read_text()
+    for k, v in res["vars"].get(path, {}).items():
+        text = text.replace(k, v)
+    return text
 
 
 def verify_paths(res: dict) -> None:
@@ -254,18 +279,34 @@ def verify_paths(res: dict) -> None:
 # ------------------------------------------------------------------ packages
 
 
-def repo_index() -> dict[str, str]:
+def _db_names(url: str, name: str) -> set[str]:
     CACHE.mkdir(parents=True, exist_ok=True)
+    db = CACHE / name
+    if not db.exists() or time.time() - db.stat().st_mtime > 86400:
+        fetch(url, db)
+    out = set()
+    with tarfile.open(db) as t:
+        for m in t:
+            if m.name.endswith("/desc"):
+                lines = t.extractfile(m).read().decode().splitlines()
+                out.add(lines[lines.index("%NAME%") + 1])
+    return out
+
+
+def repo_index(host) -> dict[str, str]:
+    """package -> repo for what this host's pacman.conf can see."""
+    from lib import CACHYOS_MARCH, cachyos_repos  # stub is installed by now
+
     idx: dict[str, str] = {}
     for repo in ("core", "extra", "multilib"):
-        db = CACHE / f"{repo}.db"
-        if not db.exists() or time.time() - db.stat().st_mtime > 86400:
-            urllib.request.urlretrieve(f"{MIRROR}/{repo}/os/x86_64/{repo}.db", db)
-        with tarfile.open(db) as t:
-            for m in t:
-                if m.name.endswith("/desc"):
-                    lines = t.extractfile(m).read().decode().splitlines()
-                    idx[lines[lines.index("%NAME%") + 1]] = repo
+        for n in _db_names(f"{MIRROR}/{repo}/os/x86_64/{repo}.db", f"{repo}.db"):
+            idx[n] = repo
+    if host.cachyos:
+        mdir = CACHYOS_MARCH[host.march][2]
+        for repo, _ml in cachyos_repos(host.march):
+            d = "x86_64" if repo == "cachyos" else mdir
+            for n in _db_names(f"{CACHYOS_MIRROR}/{d}/{repo}/{repo}.db", f"{repo}.db"):
+                idx[n] = repo
     return idx
 
 
@@ -273,8 +314,7 @@ def aur_info(names: set[str]) -> dict[str, dict]:
     out, names = {}, sorted(names)
     for i in range(0, len(names), 100):
         q = "&".join("arg[]=" + urllib.parse.quote(n) for n in names[i:i + 100])
-        with urllib.request.urlopen(f"https://aur.archlinux.org/rpc/v5/info?{q}", timeout=30) as r:
-            out.update({x["Name"]: x for x in json.load(r)["results"]})
+        out.update({x["Name"]: x for x in json.loads(fetch(f"https://aur.archlinux.org/rpc/v5/info?{q}"))["results"]})
     return out
 
 
@@ -297,7 +337,13 @@ def verify_packages(res: dict, idx: dict[str, str], aur: dict[str, dict]) -> lis
 
 
 def main() -> int:
-    args = [a for a in sys.argv[1:] if not a.startswith("-")]
+    argv = sys.argv[1:]
+    show = None
+    if "--show" in argv:
+        i = argv.index("--show")
+        show = argv[i + 1]
+        del argv[i:i + 2]
+    args = [a for a in argv if not a.startswith("-")]
     verbose = "-v" in sys.argv
     hosts = args or sorted(p.stem for p in (HERE / "hosts").glob("*.py") if p.stem != "__init__")
     results = {}
@@ -308,18 +354,27 @@ def main() -> int:
 
     warns: list[str] = []
     if "--packages" in sys.argv:
-        idx = repo_index()
         aur = aur_info(set().union(*(r["pacman"] | r["aur"] for r in results.values())))
         for r in results.values():
-            warns += verify_packages(r, idx, aur)
+            warns += verify_packages(r, repo_index(r["host"]), aur)
+
+    if show:
+        for h, r in results.items():
+            print(f"== {h}: {show}")
+            print(render(r, show) if show in r["paths"] else "   (not managed on this host)\n")
+        return 0
 
     ok = True
     for h, r in results.items():
         kinds = {k: sum(1 for v in r["paths"].values() if v[0] == k) for k in ("file", "dir", "link")}
         uu = sum(len(s) for s in r["user_units"].values())
-        print(f"== {h}: {len(r['modules'])} modules, {len(r['pacman'])} pacman + {len(r['aur'])} aur + "
+        hh = r["host"]
+        distro = f"{hh.distro}/{hh.march}" if hh.cachyos else hh.distro
+        print(f"== {h} ({distro}, {hh.bootloader}): {len(r['modules'])} modules, {len(r['pacman'])} pacman + {len(r['aur'])} aur + "
               f"{len(r['custom'])} custom pkgs, {len(r['units'])} units + {uu} user units, "
               f"{kinds['file']} files, {kinds['link']} links")
+        for u, g in r["extra_groups"].items():
+            print(f"   user {u}: +groups {','.join(sorted(g))}")
         for u in r["users"]:
             print(f"   user {u.username}: groups={','.join(u.groups) or '-'} shell={u.shell}")
         if verbose:

@@ -29,19 +29,60 @@ class Mount:
     options: str = "defaults,nofail"
 
 
+# CachyOS optimized repos per CPU level, as cachyos-repo.sh writes them
+# (mirror.cachyos.org/cachyos-repo.tar.xz, install-*-repo.awk). They go above
+# [core] in pacman.conf, followed by the generic [cachyos] repo.
+CACHYOS_MARCH = {
+    # march: (repo suffix, mirrorlist package, mirror dir)
+    "znver4": ("znver4", "cachyos-v4-mirrorlist", "x86_64_v4"),  # Zen 4 / Zen 5
+    "v4": ("v4", "cachyos-v4-mirrorlist", "x86_64_v4"),
+    "v3": ("v3", "cachyos-v3-mirrorlist", "x86_64_v3"),
+}
+
+
+def cachyos_repos(march: str) -> list[tuple[str, str]]:
+    """[(repo, mirrorlist path)] in pacman.conf order."""
+    suffix, mirrorlist, _dir = CACHYOS_MARCH[march]
+    ml = f"/etc/pacman.d/{mirrorlist}"
+    return [
+        (f"cachyos-{suffix}", ml),
+        (f"cachyos-core-{suffix}", ml),
+        (f"cachyos-extra-{suffix}", ml),
+        ("cachyos", "/etc/pacman.d/cachyos-mirrorlist"),
+    ]
+
+
 @dataclass(frozen=True)
 class Host:
     hostname: str
     username: str
     description: str = ""
+    # "arch" or "cachyos" (+ march, a CACHYOS_MARCH key)
+    distro: str = "arch"
+    march: str = ""
+    # "systemd-boot" or "limine" (limine: snapshot boot entries via
+    # limine-snapper-sync — CachyOS' default)
+    bootloader: str = "systemd-boot"
     mounts: tuple[Mount, ...] = ()
     # Host-only modules (packages for this machine, etc.) are appended to the
     # common list in modules/__init__.py.
     extra_modules: tuple = field(default_factory=tuple)
 
+    def __post_init__(self):
+        if self.distro not in ("arch", "cachyos"):
+            raise ValueError(f"{self.hostname}: unknown distro {self.distro!r}")
+        if self.distro == "cachyos" and self.march not in CACHYOS_MARCH:
+            raise ValueError(f"{self.hostname}: cachyos needs march in {sorted(CACHYOS_MARCH)}")
+        if self.bootloader not in ("systemd-boot", "limine"):
+            raise ValueError(f"{self.hostname}: unknown bootloader {self.bootloader!r}")
+
     @property
     def home(self) -> str:
         return f"/home/{self.username}"
+
+    @property
+    def cachyos(self) -> bool:
+        return self.distro == "cachyos"
 
 
 class SysModule(decman.Module):
@@ -49,8 +90,8 @@ class SysModule(decman.Module):
 
     Subclasses set NAME (e.g. "core.boot") and override decman's hooks /
     plugin-decorated methods as usual. groups() lets a module request
-    supplementary groups for the main user; core.users collects them, since
-    decman's UserManager must know the full set when it creates the user.
+    supplementary groups for the main user; core.users adds them after the
+    package step, since groups like libvirt/gamemode come with packages.
     """
 
     NAME: str = ""

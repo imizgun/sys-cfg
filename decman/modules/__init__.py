@@ -51,7 +51,10 @@ COMMON = [
 
 
 def build(host) -> list:
-    mods = [import_module(f"modules.{n}").module(host) for n in COMMON + list(host.extra_modules)]
+    names = list(COMMON)
+    if host.cachyos:
+        names.insert(names.index("core.pacman") + 1, "core.cachyos")
+    mods = [import_module(f"modules.{n}").module(host) for n in names + list(host.extra_modules)]
     # Users last: it collects groups() from every other module.
     mods.append(import_module("modules.core.users").module(host, mods))
     return mods

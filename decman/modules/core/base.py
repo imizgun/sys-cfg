@@ -12,6 +12,11 @@ class Base(SysModule):
 
     NAME = "core.base"
 
+    @property
+    def kernel(self) -> str:
+        # linux-cachyos: BORE/EEVDF + LTO/AutoFDO, built per march in its repos
+        return "linux-cachyos" if self.host.cachyos else "linux"
+
     def files(self):
         return etc_file("/etc/sudoers.d/10-wheel", permissions=0o440)
 
@@ -20,8 +25,9 @@ class Base(SysModule):
         return {
             "base",
             "base-devel",
-            "linux",
+            self.kernel,
             "linux-firmware",
+            "mkinitcpio",  # initramfs generator (CachyOS uses it too)
             "amd-ucode",  # both hosts are AMD
             "btrfs-progs",
             "sudo",
