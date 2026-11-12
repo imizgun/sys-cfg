@@ -25,6 +25,8 @@ class Base(SysModule):
             "base",
             "base-devel",
             self.kernel,
+            # fallback kernel: a second boot entry if the main one breaks
+            "linux-cachyos-lts" if self.host.cachyos else "linux-lts",
             "linux-firmware",
             "mkinitcpio",  # initramfs generator (CachyOS uses it too)
             "amd-ucode",  # both hosts are AMD
@@ -49,6 +51,7 @@ class Base(SysModule):
             "usbutils",    # lsusb
             "man-pages",
             "unzip",
+            "smartmontools",  # smartctl: disk health
             "xdg-user-dirs",  # ~/Downloads etc. (HM created them on NixOS)
         }
 

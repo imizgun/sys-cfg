@@ -15,6 +15,7 @@ class Dev(PackageSet):
         "espup", "espflash",
         # CLI
         "github-cli", "yazi", "btop", "jq", "bat", "fzf", "yt-dlp", "ffmpeg", "fastfetch",
+        "ripgrep", "bind",  # rg; dig/nslookup
         # Wayland screenshots
         "slurp", "grim",
     }

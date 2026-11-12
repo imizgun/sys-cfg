@@ -41,7 +41,7 @@ class Snapshots(SysModule):
 
     @pacman.packages
     def pacman_packages(self):
-        return {"snapper", "snap-pac"}
+        return {"snapper", "snap-pac", "btrfs-assistant"}  # GUI: browse/restore snapshots
 
     @systemd.units
     def units(self):

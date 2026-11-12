@@ -20,7 +20,7 @@ class Nautilus(SysModule):
 
     @pacman.packages
     def pacman_packages(self):
-        return {"nautilus"}
+        return {"nautilus", "ffmpegthumbnailer"}  # video thumbnails
 
     @systemd.user_units
     def user_units(self):
