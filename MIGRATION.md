@@ -31,6 +31,7 @@ yet**. Next step: a test run in an Arch VM (see the end of this file).
 | `home/programs/*.nix` | `programs/*.py` | |
 | `home/theme/gtk.nix` | `theme/gtk.py` + `dotfiles/gtk/` + `etc/dconf/` | color-scheme via system dconf db |
 | `home/theme/cursor.nix` | `theme/cursor.py` + `dotfiles/cursor/` | |
+| vicinae (was GUI-only) | `programs/vicinae.py` + `dotfiles/vicinae/sys-cfg.json` | store extensions installed by the module; settings.json imports sys-cfg.json |
 | `home/packages.nix` | `packages/{browsers,dev,apps}.py`, host-only `packages/{games,photo}.py` | |
 | flake inputs zen/nls/sonora/millennium | AUR `zen-browser-bin`, `nls-bin`, `sonora-bin`, `millennium` | nls/sonora AUR pkgs are by their upstream author |
 | flake inputs ricture, wayzoomy | `pkgbuilds/{ricture,wayzoomy}-git` | built by `packages/custom.py` |
@@ -56,6 +57,11 @@ yet**. Next step: a test run in an Arch VM (see the end of this file).
   `dotnet-ef` → `dotnet tool install --global dotnet-ef`.
 - fish plugins: `fisher` + `dotfiles/fish/fish_plugins` (bass has no Arch pkg).
   starship/direnv hooks: `dotfiles/fish/arch/integrations.fish`.
+- vicinae: `settings.json` stays a writable real file (the GUI rewrites it)
+  and imports the repo's `sys-cfg.json`; the module creates it if missing.
+  Store extensions are installed if missing (`STORE_EXTENSIONS`); the Raycast
+  one (Google Translate) must be installed once from the UI — vicinae
+  re-bundles Raycast zips on install. The `nix` extension is not carried over.
 - `JAVA_HOME` isn't exported; `archlinux-java` manages the default JDK.
 - AUR builds run as `builduser` (home in `/var/lib/builduser`) — cargo-based
   PKGBUILDs need a writable `$HOME`.

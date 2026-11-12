@@ -1,0 +1,44 @@
+// vicinae config from sys-cfg (dotfiles/vicinae/sys-cfg.json).
+// Imported by ~/.config/vicinae/settings.json, which stays writable for the
+// GUI and only holds local overrides — values there win over this file.
+// To persist a GUI tweak, move it from settings.json into here.
+{
+   "$schema": "https://vicinae.com/schemas/config.json",
+   "escape_key_behavior": "close_window",
+   "font": {
+      "normal": {
+         "family": "JetBrains Mono",
+         "size": 11
+      }
+   },
+   "theme": {
+      "dark": {
+         "name": "nord",
+         "icon_theme": "Adwaita"
+      }
+   },
+   "launcher_window": {
+      "rounding": 20,
+      "client_side_decorations": {
+         "border_width": 1
+      },
+      "compact_mode": {
+         "enabled": true
+      }
+   },
+   "favorites": [
+      "applications:rust-rover",
+      "applications:discord",
+      "applications:steam",
+      "applications:zen-beta",
+      "applications:org.telegram",
+      "clipboard:history"
+   ],
+   "providers": {
+      "calculator": {
+         "preferences": {
+            "backend": "qalculate"
+         }
+      }
+   }
+}

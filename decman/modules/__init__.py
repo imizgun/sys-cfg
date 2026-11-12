@@ -37,6 +37,7 @@ COMMON = [
     "programs.direnv",
     "programs.jdk",
     "programs.kitty",
+    "programs.vicinae",
     # theme: appearance, shared across GTK/niri/cursor
     "theme.gtk",
     "theme.cursor",

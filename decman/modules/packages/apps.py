@@ -11,7 +11,6 @@ def module(host):
         "easyeffects",
         "obsidian",
     }, aur={
-        "vicinae-bin",
         "sonora-bin",
         "photocraft",
         "wordcraft",

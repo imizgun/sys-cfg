@@ -10,6 +10,7 @@
     ./programs/helix.nix
     ./programs/direnv.nix
     ./programs/jdk.nix
+    ./programs/vicinae.nix
 
     # desktop: the graphical session
     ./desktop/niri.nix
