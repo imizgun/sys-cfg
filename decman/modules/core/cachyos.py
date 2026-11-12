@@ -18,7 +18,6 @@ class CachyOS(SysModule):
     cachyos-fish-config (dotfiles/fish).
     """
 
-    NAME = "core.cachyos"
 
     def before_update(self, store):
         # Normally done by the installer; makes a plain Arch -> CachyOS switch

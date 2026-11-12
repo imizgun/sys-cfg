@@ -9,7 +9,6 @@ class Ghostty(SysModule):
     """Ghostty with one long-lived GTK instance (D-Bus activatable unit shipped
     by the package), started with the session so Mod+T is instant."""
 
-    NAME = "programs.ghostty"
 
     def symlinks(self):
         return link(self.host, "ghostty/config.ghostty", ".config/ghostty/config.ghostty")

@@ -6,7 +6,6 @@ from lib import SysModule, etc_file
 class Bluetooth(SysModule):
     """BlueZ; the why of each main.conf setting is commented in the file."""
 
-    NAME = "hardware.bluetooth"
 
     def files(self):
         return etc_file("/etc/bluetooth/main.conf")

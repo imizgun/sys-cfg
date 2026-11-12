@@ -6,7 +6,6 @@ from lib import SysModule, etc_file, link_tree
 class Niri(SysModule):
     """niri + greetd/tuigreet login, portals, keyring, Xwayland bridge."""
 
-    NAME = "desktop.niri"
 
     def files(self):
         return etc_file("/etc/greetd/config.toml")

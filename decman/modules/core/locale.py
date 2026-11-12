@@ -14,7 +14,6 @@ class Locale(SysModule):
     The graphical keyboard layout lives in dotfiles/niri (input.kdl).
     """
 
-    NAME = "core.locale"
 
     def files(self):
         conf = "LANG=en_US.UTF-8\n" + "".join(f"LC_{v}={LC}\n" for v in LC_VARS)

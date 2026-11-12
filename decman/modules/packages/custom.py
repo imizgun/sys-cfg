@@ -6,7 +6,6 @@ from lib import PKGBUILDS, SysModule
 class Custom(SysModule):
     """Packages built from PKGBUILDs in pkgbuilds/ (no AUR package exists)."""
 
-    NAME = "packages.custom"
     PKGS = ("ricture-git", "wayzoomy-git")
 
     @aur.custom_packages

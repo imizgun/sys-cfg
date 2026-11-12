@@ -1,8 +1,8 @@
 from lib.packages import PackageSet
 
 
-def module(host):
-    return PackageSet(host, "packages.apps", pacman={
+class Apps(PackageSet):
+    PACMAN = {
         "telegram-desktop",
         "discord",
         "loupe",
@@ -10,9 +10,14 @@ def module(host):
         "mpv",
         "easyeffects",
         "obsidian",
-    }, aur={
+    }
+    AUR = {
         "sonora-bin",
         "photocraft",
         "wordcraft",
         "onlyoffice-bin",
-    })
+    }
+
+
+def module(host):
+    return Apps(host)

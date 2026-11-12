@@ -16,7 +16,6 @@ class Boot(SysModule):
       It expects snapshots at /@/.snapshots (what hardware.snapshots creates).
     """
 
-    NAME = "core.boot"
 
     def on_enable(self, store):
         if self.host.bootloader == "systemd-boot":

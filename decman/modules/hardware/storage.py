@@ -18,7 +18,6 @@ class Storage(SysModule):
     .mount would make multi-user.target wait 90s for the device.
     """
 
-    NAME = "hardware.storage"
 
     def files(self):
         out = {}

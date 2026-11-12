@@ -13,7 +13,6 @@ class Games(SysModule):
     mangohud: `mangohud %command%`. gamescope: per-game compositor.
     """
 
-    NAME = "packages.games"
 
     def groups(self):
         return {"gamemode"}

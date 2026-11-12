@@ -8,7 +8,6 @@ class Firewall(SysModule):
     Only the `inet filter` table is managed, so libvirt's own NAT tables
     survive reloads (no `flush ruleset`)."""
 
-    NAME = "core.firewall"
 
     def files(self):
         return etc_file("/etc/nftables.conf", permissions=0o755)

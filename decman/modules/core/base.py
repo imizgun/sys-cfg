@@ -10,7 +10,6 @@ class Base(SysModule):
     so base/kernel/firmware must be listed here too.
     """
 
-    NAME = "core.base"
 
     @property
     def kernel(self) -> str:

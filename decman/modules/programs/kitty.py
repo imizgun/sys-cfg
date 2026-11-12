@@ -4,7 +4,6 @@ from lib import SysModule, link_tree
 
 
 class Kitty(SysModule):
-    NAME = "programs.kitty"
 
     def symlinks(self):
         return link_tree(self.host, "kitty", ".config/kitty")

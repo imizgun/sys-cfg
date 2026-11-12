@@ -9,7 +9,6 @@ class Gtk(SysModule):
     system dconf db for color-scheme (what GTK4/libadwaita apps actually read;
     a system db needs no running session, unlike `gsettings set`)."""
 
-    NAME = "theme.gtk"
 
     def files(self):
         return (

@@ -7,7 +7,6 @@ class Virt(SysModule):
     """KVM/QEMU via libvirt + virt-manager; swtpm for Windows 11 guests,
     OVMF for UEFI. SPICE USB redirection comes with spice-gtk (virt-manager dep)."""
 
-    NAME = "hardware.virt"
 
     def groups(self):
         return {"libvirt", "kvm"}

@@ -5,7 +5,6 @@ from lib import SysModule
 
 
 class Networking(SysModule):
-    NAME = "core.networking"
 
     def files(self):
         return {"/etc/hostname": File(content=f"{self.host.hostname}\n")}

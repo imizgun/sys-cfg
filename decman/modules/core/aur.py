@@ -10,7 +10,6 @@ class Aur(SysModule):
     PKGBUILDs need a writable home; the default `nobody` has none). The user
     itself is created in core.users."""
 
-    NAME = "core.aur"
 
 
 def module(host):

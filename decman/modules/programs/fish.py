@@ -8,7 +8,6 @@ class Fish(SysModule):
     """fish + starship, and fish as the main user's login shell. Plugins
     (autopair, bass) via fisher from fish_plugins; bass has no Arch package."""
 
-    NAME = "programs.fish"
 
     def symlinks(self):
         h = self.host

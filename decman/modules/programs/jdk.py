@@ -7,7 +7,6 @@ class Jdk(SysModule):
     """JDK 25 (as on NixOS) + Maven. With a single JDK installed,
     archlinux-java picks it as default automatically."""
 
-    NAME = "programs.jdk"
 
     @pacman.packages
     def pacman_packages(self):

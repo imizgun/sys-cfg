@@ -8,7 +8,6 @@ class Cursor(SysModule):
     (Xresources), and as the fallback 'default' theme. XCURSOR_* env is in
     environment.d/10-session.conf."""
 
-    NAME = "theme.cursor"
 
     def symlinks(self):
         h = self.host

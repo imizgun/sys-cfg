@@ -7,7 +7,6 @@ class Steam(SysModule):
     """Steam (multilib) + Millennium. The .desktop override forces GDK_SCALE=1,
     see the comment in the file."""
 
-    NAME = "desktop.steam"
 
     def files(self):
         return user_file(self.host, "applications/steam.desktop",

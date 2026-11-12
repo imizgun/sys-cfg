@@ -4,7 +4,6 @@ from lib import SysModule, link_tree
 
 
 class Fonts(SysModule):
-    NAME = "desktop.fonts"
 
     def symlinks(self):
         return link_tree(self.host, "fontconfig", ".config/fontconfig")

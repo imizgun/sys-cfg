@@ -6,7 +6,6 @@ from lib import SysModule
 class Gpu(SysModule):
     """AMD graphics (both hosts), incl. 32-bit drivers for Steam."""
 
-    NAME = "hardware.gpu"
 
     @pacman.packages
     def pacman_packages(self):

@@ -27,7 +27,6 @@ class Vicinae(SysModule):
     (the GUI rewrites it), so it's only created with the import if missing.
     The server is started by niri (dotfiles/niri/cfg/autostart.kdl)."""
 
-    NAME = "programs.vicinae"
 
     def symlinks(self):
         return link(self.host, "vicinae/sys-cfg.json", ".config/vicinae/sys-cfg.json")

@@ -8,7 +8,6 @@ class Noctalia(SysModule):
     overrides from ~/.local/state/noctalia/settings.toml. Started by niri
     (dotfiles/niri/cfg/autostart.kdl)."""
 
-    NAME = "desktop.noctalia"
 
     def symlinks(self):
         out = link(self.host, "noctalia/config.toml", ".config/noctalia/config.toml")

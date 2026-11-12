@@ -6,7 +6,6 @@ from lib import SysModule
 class Udev(SysModule):
     """Keyboard flashing/config: qmk ships its udev rules; VIA for VIA keyboards."""
 
-    NAME = "hardware.udev"
 
     @pacman.packages
     def pacman_packages(self):

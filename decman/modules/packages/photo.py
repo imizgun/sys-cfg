@@ -1,5 +1,9 @@
 from lib.packages import PackageSet
 
 
+class Photo(PackageSet):
+    PACMAN = {"rawtherapee", "darktable"}
+
+
 def module(host):
-    return PackageSet(host, "packages.photo", pacman={"rawtherapee", "darktable"})
+    return Photo(host)

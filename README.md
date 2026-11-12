@@ -28,8 +28,10 @@ decman/
     core/ hardware/ desktop/ programs/ theme/ packages/
 ```
 
-A module is a `lib.SysModule` subclass with a `NAME` and a `module(host)`
-factory; packages/units come from decman's plugin decorators
-(`@pacman.packages`, `@aur.packages`, `@systemd.units`, `@systemd.user_units`),
-files from `files()` / `symlinks()`. Plain package lists use
-`lib.packages.PackageSet`. Groups for the main user: override `groups()`.
+A module is a `lib.SysModule` subclass plus a `module(host)` factory; its
+decman name comes from the file path (`modules/core/boot.py` → `core.boot`, the
+same key `modules/__init__.py` lists). Packages/units come from decman's plugin
+decorators (`@pacman.packages`, `@aur.packages`, `@systemd.units`,
+`@systemd.user_units`), files from `files()` / `symlinks()`. Plain package
+lists subclass `lib.packages.PackageSet` with `PACMAN` / `AUR` sets. Groups for
+the main user: override `groups()`.

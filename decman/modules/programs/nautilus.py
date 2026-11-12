@@ -7,7 +7,6 @@ class Nautilus(SysModule):
     """Nautilus as one resident instance started with the session; the D-Bus
     service overrides route activation through that unit. Details in the files."""
 
-    NAME = "programs.nautilus"
 
     def files(self):
         h = self.host

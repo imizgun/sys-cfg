@@ -17,7 +17,6 @@ class Snapshots(SysModule):
     # config name -> mountpoint whose .snapshots subvolume snapper needs
     CONFIGS = {"home": "/home", "root": "/"}
 
-    NAME = "hardware.snapshots"
 
     def files(self):
         return {

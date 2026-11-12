@@ -11,7 +11,6 @@ class Pacman(SysModule):
     paccache.timer keeps the last 3 versions weekly.
     """
 
-    NAME = "core.pacman"
 
     def files(self):
         return etc_file("/etc/pacman.conf")

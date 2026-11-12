@@ -86,20 +86,22 @@ class Host:
 
 
 class SysModule(decman.Module):
-    """Base for every module here: carries the Host and a unique name.
+    """Base for every module here: carries the Host; the decman module name is
+    derived from where the class lives — modules/core/boot.py -> "core.boot",
+    the same key modules/__init__.py lists it under. (decman keeps these names
+    in its store, so moving a file renames the module: decman then sees the old
+    one disabled and the new one enabled.)
 
-    Subclasses set NAME (e.g. "core.boot") and override decman's hooks /
-    plugin-decorated methods as usual. groups() lets a module request
-    supplementary groups for the main user; core.users adds them after the
-    package step, since groups like libvirt/gamemode come with packages.
+    Override decman's hooks / plugin-decorated methods as usual. groups() lets a
+    module request supplementary groups for the main user; core.users adds them
+    after the package step, since groups like libvirt/gamemode come with packages.
     """
 
-    NAME: str = ""
-
     def __init__(self, host: Host) -> None:
-        if not self.NAME:
-            raise TypeError(f"{type(self).__name__} must set NAME")
-        super().__init__(self.NAME)
+        mod = type(self).__module__
+        if not mod.startswith("modules."):
+            raise TypeError(f"{type(self).__name__}: SysModule subclasses live under modules/ (got {mod})")
+        super().__init__(mod.removeprefix("modules."))
         self.host = host
 
     def groups(self) -> set[str]:
