@@ -12,7 +12,8 @@ class Fish(SysModule):
     def symlinks(self):
         h = self.host
         return (
-            link(h, "fish/conf.d/aliases.fish", ".config/fish/conf.d/aliases.fish")
+            link(h, "fish/arch/config.fish", ".config/fish/config.fish")
+            | link(h, "fish/conf.d/aliases.fish", ".config/fish/conf.d/aliases.fish")
             | link(h, "fish/conf.d/user.fish", ".config/fish/conf.d/user.fish")
             | link(h, "fish/arch/integrations.fish", ".config/fish/conf.d/integrations.fish")
             | link(h, "fish/fish_plugins", ".config/fish/fish_plugins")
