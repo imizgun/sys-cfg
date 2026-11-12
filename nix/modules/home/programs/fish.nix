@@ -15,8 +15,8 @@
     '';
     shellAliases = {
       ls = "nls";
-      nix-rebuild = "sudo nixos-rebuild switch --flake ~/nixos-config --impure";
-      nix-update = "nix flake update --flake ~/nixos-config && sudo nixos-rebuild switch --flake ~/nixos-config --impure";
+      nix-rebuild = "sudo nixos-rebuild switch --flake ~/sys-cfg/nix";
+      nix-update = "nix flake update --flake ~/sys-cfg/nix && sudo nixos-rebuild switch --flake ~/sys-cfg/nix";
     };
     plugins = [
       {

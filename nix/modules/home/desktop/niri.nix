@@ -1,15 +1,13 @@
-{ config, ... }:
+{ ... }:
 
 {
-  # Source of truth is the cloned dotfiles repo, not this flake — edit
-  # ~/niri-dotfiles and rebuild to pick up changes. Symlinking the whole
-  # directory (not just config.kdl) keeps the `include "./cfg/*.kdl"`
-  # relative paths inside config.kdl working.
+  # Source of truth is dotfiles/niri in this same repo (sys-cfg) — edit it
+  # and rebuild to pick up changes. Symlinking the whole directory (not just
+  # config.kdl) keeps the `include "./cfg/*.kdl"` relative paths inside
+  # config.kdl working. A relative path inside the repo keeps evaluation pure,
+  # so no --impure is needed.
   xdg.configFile."niri" = {
-    # Nix path value (not a string) so this still gets copied into the
-    # store at eval time like the old hardcoded literal did — keeps the
-    # existing --impure/"rebuild to pick up changes" behavior (see README).
-    source = /. + config.home.homeDirectory + "/niri-dotfiles/niri";
+    source = ../../../../dotfiles/niri;
     recursive = true;
   };
 }

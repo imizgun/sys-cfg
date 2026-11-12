@@ -1,8 +1,9 @@
-# nixos-config
+# nix (sys-cfg)
 
 Declarative config for multiple machines: NixOS (system) + Home Manager (user),
-driven by one flake. Lives in `~/nixos-config`; `/etc/nixos` is a symlink to this
-directory so plain `nixos-rebuild` commands still work.
+driven by one flake. Lives in `nix/` of the `~/sys-cfg` monorepo
+(github.com/imizgun/sys-cfg), next to `dotfiles/`. Always pass
+`--flake ~/sys-cfg/nix` — `/etc/nixos` is not used.
 
 Each host gets its own `nixosConfigurations.<hostname>` entry in `flake.nix`, which
 also pins that host's username. Every other module reads `hostname`/`username` via
@@ -37,19 +38,17 @@ modules/home/                       everything that runs as your user
     fish.nix / kitty.nix / helix.nix   programs.<name>.enable — Home Manager owns
                                         the dotfiles for these declaratively
   desktop/
-    niri.nix                       symlinks ~/niri-dotfiles/niri into ~/.config/niri
+    niri.nix                       symlinks dotfiles/niri into ~/.config/niri
   theme/                           appearance, shared across GTK/niri/cursor
     cursor.nix                     home.pointerCursor (capitaine-cursors)
     gtk.nix                        GTK theme/icons/dark-mode for Nautilus etc.
   packages.nix                     GUI apps and CLI tools you just want on PATH
 ```
 
-`~/niri-dotfiles` (github.com/imizgun/niri-dotfiles) is a separate git repo, not
-vendored into this flake — `modules/home/desktop/niri.nix` just points at it on disk.
-Edit niri's KDL files there directly; a rebuild picks up the change. That's also why
-rebuilds of this flake need `--impure` (see below): pointing at a path outside the
-flake's own tracked files breaks Nix's pure-evaluation sandbox. It also means the
-noctalia settings in `~/niri-dotfiles/noctalia/` (bar widgets, colorscheme, wallpaper
+Dotfiles live in `../dotfiles/` of the same repo; `modules/home/desktop/niri.nix`
+points at `dotfiles/niri` by relative path. Edit niri's KDL files there; a rebuild
+picks up the change. Only git-tracked files are visible to the flake — `git add`
+new files before rebuilding. The noctalia settings in `dotfiles/noctalia/` (bar widgets, colorscheme, wallpaper
 config) are still in v4's JSON schema and are **not** wired into this system —
 noctalia v5 uses TOML with a different schema entirely, so that's unmigrated. Niri's
 keybinds/rules/autostart *are* migrated to v5 (`noctalia msg ...` IPC, v5 layer-shell
@@ -84,17 +83,17 @@ the same commands work unchanged on any host this flake knows about (currently
 other than the one you're on.
 
 ```sh
-# after editing any .nix file (or ~/niri-dotfiles) — apply the change
-sudo nixos-rebuild switch --flake ~/nixos-config --impure
+# after editing any .nix file (or dotfiles/) — apply the change
+sudo nixos-rebuild switch --flake ~/sys-cfg/nix
 
 # check for eval errors without touching the running system
-sudo nixos-rebuild dry-build --flake ~/nixos-config --impure
+nixos-rebuild build --flake ~/sys-cfg/nix
 
 # pull newer versions of nixpkgs / home-manager / zen-browser
-nix flake update
+nix flake update --flake ~/sys-cfg/nix
 
 # see what changed before committing an update
-git -C ~/nixos-config diff flake.lock
+git -C ~/sys-cfg diff nix/flake.lock
 ```
 
 ## Adding a new host
@@ -108,12 +107,7 @@ git -C ~/nixos-config diff flake.lock
    copy it in — it's UUID/filesystem-specific and can't be written by hand or reused
    from another host.
 
-`--impure` is only needed because `modules/home/niri.nix` reads
-`~/niri-dotfiles` from an absolute path outside the flake. Everything else here is
-pure; if you later vendor `niri-dotfiles` as a git submodule under this repo instead,
-you can drop `--impure`.
-
-Always run `dry-build` before `switch` when you've made a change you're not sure
+Always run `build` before `switch` when you've made a change you're not sure
 about — it does the full evaluation and build but never touches your running system.
 
 ## If a rebuild breaks something
@@ -130,7 +124,7 @@ Nothing here is destructive — worst case you lose a few minutes rolling back.
 
 ## Why this structure
 
-- Everything is one git repo in your home directory (`git -C ~/nixos-config log`),
+- Everything is one git repo in your home directory (`git -C ~/sys-cfg log`),
   so config history is `git log`, not "which file did I edit three weeks ago."
 - `flake.lock` pins exact commits of nixpkgs/home-manager/zen-browser, so
   `nixos-rebuild switch` always builds the same thing until you explicitly
