@@ -1,0 +1,42 @@
+    window-rule {
+        geometry-corner-radius 12
+        clip-to-geometry true
+    }
+
+    window-rule {
+        match app-id="Alacritty"
+        match app-id="com.mitchellh.ghostty"
+        match app-id="kitty"
+        match app-id="sonora"
+        match app-id="org.telegram.desktop*"
+        match app-id="org.gnome.Nautilus"
+        match app-id="discord"
+
+        opacity 0.75
+
+        background-effect {
+            blur true
+        }
+    }
+
+    layer-rule {
+        match namespace="^noctalia-wallpaper$"
+        place-within-backdrop true
+    }
+
+    layer-rule {
+        match namespace="^noctalia-(panel|attached-panel|dock|bar-.*|notification|osd|backdrop)$"
+        match namespace="vicinae"
+        
+        background-effect {
+            xray false
+            blur true
+        }
+        opacity 0.75
+    }
+
+    window-rule {
+        match app-id="dev.noctalia.Noctalia"
+        open-floating true
+    }
+

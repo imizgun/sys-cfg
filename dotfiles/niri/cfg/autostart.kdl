@@ -1,0 +1,10 @@
+// ────────────── Startup Applications ──────────────
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-at-startup
+
+    // v5 is a native binary, not launched through quickshell anymore.
+    spawn-at-startup "noctalia"
+
+    // Provides Xwayland (and $DISPLAY) for X11-only apps like Steam.
+    // niri doesn't bundle Xwayland support itself.
+    spawn-at-startup "xwayland-satellite"
+    spawn-at-startup "vicinae" "server"

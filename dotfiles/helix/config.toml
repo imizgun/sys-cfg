@@ -1,0 +1,29 @@
+theme = "tokyonight_moon"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor]
+mouse = true
+auto-save = true
+bufferline = "multiple"
+cursorline = true
+auto-format = true
+auto-completion = true
+completion-trigger-len = 1
+auto-info = true
+end-of-line-diagnostics = "hint"
+gutters = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
+
+[editor.lsp]
+display-inlay-hints = true
+
+[keys.normal]
+"C-left" = ["move_prev_word_start", "collapse_selection"]
+"C-right" = ["move_next_word_start", "collapse_selection"]
+
+[keys.insert]
+"C-left" = "move_prev_word_start"
+"C-right" = "move_next_word_start"
