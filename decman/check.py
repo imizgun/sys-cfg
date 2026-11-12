@@ -96,11 +96,25 @@ def install_stub() -> None:
             self.packages: set[str] = set()
             self.ignored_packages: set[str] = set()
 
+    class _AurCommands:
+        """decman.plugins.aur.commands.AurCommands (subclassed by core.aur)."""
+
+        def install_chroot(self, chroot_dir, packages):
+            return ["arch-nspawn", chroot_dir, "pacman", "-S", "--needed", "--noconfirm", *packages]
+
+        def resolve_real_name_chroot(self, chroot_dir, pkg):
+            return ["arch-nspawn", chroot_dir, "pacman", "-Sddp", "--print-format=%n", pkg]
+
+        def remove_chroot(self, chroot_dir, packages):
+            return ["arch-nspawn", chroot_dir, "pacman", "-Rsu", "--noconfirm", *packages]
+
     class _Aur(_Pkgs):
         def __init__(self):
             super().__init__()
             self.custom_packages: set = set()
             self.makepkg_user = "nobody"
+            self.build_dir = "/tmp/decman/build"
+            self.commands = _AurCommands()
 
     class _Systemd:
         def __init__(self):
