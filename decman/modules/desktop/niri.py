@@ -28,6 +28,7 @@ class Niri(SysModule):
             # X11 apps
             "xorg-xwayland",
             "xwayland-satellite",
+            "wl-clipboard",
         }
 
     @systemd.units
