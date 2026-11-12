@@ -2,9 +2,9 @@
 """Offline sanity check of the decman source — no root, no Arch, no decman.
 
     python3 decman/check.py                # all hosts
-    python3 decman/check.py nixos -v       # one host, list everything
+    python3 decman/check.py mainpc -v       # one host, list everything
     python3 decman/check.py --packages     # + verify names in Arch(/CachyOS) repos / AUR
-    python3 decman/check.py nixos --show /etc/pacman.conf   # rendered file
+    python3 decman/check.py mainpc --show /etc/pacman.conf   # rendered file
 
 decman itself is replaced by a minimal stub of its public API (File, Symlink,
 Module, plugin decorators, UserManager), so this checks *our* code: imports,

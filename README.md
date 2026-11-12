@@ -1,6 +1,6 @@
 # sys-cfg
 
-System config and dotfiles for my machines (`nixos` — desktop, `laptop`).
+System config and dotfiles for my machines (`mainpc` — desktop, `laptop`; the PC is `nixos` under `nix/`).
 Currently NixOS; moving to CachyOS managed by decman (see MIGRATION.md).
 
 ```

@@ -22,7 +22,7 @@ yet**. Next step: a test run in an Arch VM (see the end of this file).
 | `hardware/audio.nix` | `hardware/audio.py` | |
 | `hardware/bluetooth.nix` | `hardware/bluetooth.py` + `etc/bluetooth/main.conf` | |
 | `hardware/power.nix` | `hardware/power.py` | |
-| `hardware/storage.nix` | `hardware/storage.py` | `/mnt/sda1` as a `.mount` unit, `nixos` host only |
+| `hardware/storage.nix` | `hardware/storage.py` | `/mnt/sda1` as an `.automount` unit, `mainpc` host only |
 | `hardware/snapshots.nix` | `hardware/snapshots.py` + `etc/snapper/`, timer drop-in | + new: `/` pre/post snapshots via snap-pac (replaces NixOS generations, see below) |
 | `hardware/udev.nix` | `hardware/udev.py` | `qmk` (ships udev rules), `via-bin` |
 | `hardware/virtualisation.nix` | `hardware/virt.py` | |
@@ -60,7 +60,7 @@ yet**. Next step: a test run in an Arch VM (see the end of this file).
   mangohud, gamescope, lib32 variants.
 - `dialout` → `uucp` (Arch's serial-port group); `libvirtd` group → `libvirt`.
 - `/mnt/sda1` was in the shared NixOS module (with `nofail`) — it's the PC's
-  disk, so it's now only in `hosts/nixos.py`, as `.automount` (mounted on
+  disk, so it's now only in `hosts/mainpc.py`, as `.automount` (mounted on
   first access; a missing disk doesn't delay boot, like `nofail`).
 - .NET 11: only RC in AUR (`dotnet-sdk-preview-bin`); `extra` has 10.
   `dotnet-ef` → `dotnet tool install --global dotnet-ef`.
@@ -154,7 +154,7 @@ CachyOS installer choices:
 - Desktop: **No desktop / minimal** — niri, noctalia and everything else come
   from decman. (The installer's "Niri" edition installs `cachyos-niri-noctalia`
   presets that would conflict with `dotfiles/`.)
-- Hostname `nixos` (PC) or `laptop`, user `vkabaczko` / `imizgun` accordingly
+- Hostname `mainpc` (PC) or `laptop`, user `vkabaczko` / `imizgun` accordingly
   (or run with `sudo SYSCFG_HOST=<host> decman …`).
 
 Then:
@@ -184,5 +184,7 @@ cmdline (limine: `/etc/default/limine`; systemd-boot: loader entries),
 mirrorlist contents, passwords (`passwd`), hostname matching a
 `decman/hosts/<name>.py`, swap/zram.
 
-Hostnames: `nixos` is kept for continuity with `nix/`; renaming the PC means
-renaming `decman/hosts/nixos.py` and `dotfiles/noctalia/hosts/nixos.toml`.
+Hostnames: the PC is `mainpc` in decman but still `nixos` in `nix/` (renaming
+the live NixOS host isn't worth it); `nix/.../noctalia.nix` maps it to
+`dotfiles/noctalia/hosts/mainpc.toml`. Renaming a host = renaming
+`decman/hosts/<name>.py` and `dotfiles/noctalia/hosts/<name>.toml`.

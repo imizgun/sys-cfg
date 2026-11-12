@@ -1,9 +1,9 @@
-"""Desktop PC (Ryzen 5 7600 — Zen 4, AMD GPU). Hostname kept from NixOS for now."""
+"""Desktop PC (Ryzen 5 7600 — Zen 4, AMD GPU). Was `nixos` under NixOS (nix/hosts/nixos)."""
 
 from lib import Host, Mount
 
 HOST = Host(
-    hostname="nixos",
+    hostname="mainpc",
     username="vkabaczko",
     description="Mikhail",
     distro="cachyos",

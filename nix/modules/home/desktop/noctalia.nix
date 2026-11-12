@@ -1,7 +1,9 @@
 { dotfiles, hostname, lib, ... }:
 
 let
-  hostFile = "${dotfiles}/noctalia/hosts/${hostname}.toml";
+  # The PC is `nixos` here but `mainpc` in decman/ and dotfiles/.
+  name = if hostname == "nixos" then "mainpc" else hostname;
+  hostFile = "${dotfiles}/noctalia/hosts/${name}.toml";
 in
 {
   # noctalia v5 merges every *.toml in ~/.config/noctalia, then applies the
