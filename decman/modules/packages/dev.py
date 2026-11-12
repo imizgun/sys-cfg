@@ -27,6 +27,9 @@ class Dev(PackageSet):
         # "nls-bin",                 # `ls` alias (dotfiles/fish/conf.d/aliases.fish)
         "flow-control-bin",
         "dotnet-sdk-preview-bin",  # .NET 11 (NixOS had dotnet-sdk_11); extra/ has only 10
+        # needs dotnet-host>=11 — decman drops dep versions and thinks extra's
+        # dotnet-host (10) satisfies it, so the AUR host has to be listed
+        "dotnet-host-preview-bin",
     }
 
 
