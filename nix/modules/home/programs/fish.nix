@@ -41,8 +41,9 @@
 
   xdg.configFile."starship.toml".source = "${dotfiles}/starship.toml";
 
-  xdg.configFile."fish" = {
-    source = "${dotfiles}/fish";
+  # Only conf.d: dotfiles/fish/{arch,fish_plugins} are for the Arch setup.
+  xdg.configFile."fish/conf.d" = {
+    source = "${dotfiles}/fish/conf.d";
     recursive = true;
   };
 }

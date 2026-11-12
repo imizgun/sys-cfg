@@ -1,0 +1,20 @@
+# One long-lived GTK process owns every Nautilus window, started with the
+# graphical session, so Mod+E (`spawn "nautilus"`) just asks the running
+# instance over D-Bus for a new window instead of cold-starting GTK.
+[Unit]
+Description=Nautilus file manager (background instance)
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=dbus
+BusName=org.gnome.Nautilus
+ExecStart=/usr/bin/nautilus --gapplication-service
+# `--gapplication-service` alone exits after ~10s with no windows (GApplication
+# inactivity timeout). Nautilus' main() calls g_application_hold() when this is
+# set, keeping it resident.
+Environment=NAUTILUS_PERSIST=1
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

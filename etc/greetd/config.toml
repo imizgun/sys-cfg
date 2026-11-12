@@ -1,0 +1,8 @@
+# /etc/greetd/config.toml — managed by sys-cfg (decman/modules/desktop/niri.py)
+
+[terminal]
+vt = 1
+
+[default_session]
+command = "tuigreet --remember --cmd niri-session"
+user = "greeter"
