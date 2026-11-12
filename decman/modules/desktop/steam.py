@@ -16,9 +16,9 @@ class Steam(SysModule):
     def pacman_packages(self):
         return {"steam"}
 
-    @aur.packages
-    def aur_packages(self):
-        return {"millennium"}
+    # @aur.packages
+    # def aur_packages(self):
+    #     return {"millennium"}
 
 
 def module(host):
