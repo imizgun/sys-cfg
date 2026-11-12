@@ -20,8 +20,8 @@ class Dev(PackageSet):
         "slurp", "grim",
     }
     AUR = {
-        # IDEs
-        "rustrover", "rider", "intellij-idea-ultimate-edition",
+        # IDEs — TEMP: disabled for the VM test (huge builds), re-enable after
+        # "rustrover", "rider", "intellij-idea-ultimate-edition",
         "claude-code",
         "nls-bin",                 # `ls` alias (dotfiles/fish/conf.d/aliases.fish)
         "flow-control-bin",
