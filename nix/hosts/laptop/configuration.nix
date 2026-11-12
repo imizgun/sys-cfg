@@ -7,6 +7,7 @@
     # core: boots, networks, and identifies the machine
     ../../modules/system/core/boot.nix
     ../../modules/system/core/networking.nix
+    ../../modules/system/core/ssh.nix
     ../../modules/system/core/locale.nix
     ../../modules/system/core/users.nix
     ../../modules/system/core/nix.nix
