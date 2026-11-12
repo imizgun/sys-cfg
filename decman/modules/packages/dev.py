@@ -14,7 +14,7 @@ class Dev(PackageSet):
         # embedded (ESP32)
         "espup", "espflash",
         # CLI
-        "github-cli", "yazi", "btop", "jq", "bat", "fzf", "yt-dlp", "ffmpeg",
+        "github-cli", "yazi", "btop", "jq", "bat", "fzf", "yt-dlp", "ffmpeg", "fastfetch"
         # Wayland screenshots
         "slurp", "grim",
     }
