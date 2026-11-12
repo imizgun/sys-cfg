@@ -11,7 +11,9 @@ class Audio(SysModule):
     @pacman.packages
     def pacman_packages(self):
         return {"pipewire", "pipewire-alsa", "pipewire-pulse", "wireplumber",
-                "lib32-pipewire", "rtkit", "pavucontrol"}
+                "lib32-pipewire", "rtkit", "pavucontrol",
+                # DSP firmware for laptop codecs (NixOS: enableRedistributableFirmware)
+                "sof-firmware", "alsa-firmware", "alsa-utils"}
 
 
 def module(host):

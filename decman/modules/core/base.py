@@ -44,6 +44,12 @@ class Base(SysModule):
             "xdg-utils",
             "dosfstools",  # mkfs.vfat / fsck for the ESP
             "e2fsprogs",   # ext4 data disk
+            "exfatprogs",  # USB sticks / SD cards
+            "inetutils",   # hostname, ping6, ...
+            "usbutils",    # lsusb
+            "man-pages",
+            "unzip",
+            "xdg-user-dirs",  # ~/Downloads etc. (HM created them on NixOS)
         }
 
     @systemd.units

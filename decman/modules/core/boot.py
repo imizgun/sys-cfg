@@ -17,6 +17,17 @@ class Boot(SysModule):
     """
 
 
+    def before_update(self, store):
+        # The CachyOS installer adds plymouth to the initramfs HOOKS; plymouth
+        # isn't declared (so decman removes it) and mkinitcpio errors out on a
+        # missing hook. Drop it before the package step rebuilds initramfs.
+        # (A leftover `splash` on the kernel cmdline is harmless.)
+        decman.sh(
+            "f=/etc/mkinitcpio.conf; "
+            "grep -Eq '^HOOKS=.*\\bplymouth\\b' $f && "
+            "sed -Ei '/^HOOKS=/{s/ ?\\bplymouth\\b//}' $f || true"
+        )
+
     def on_enable(self, store):
         if self.host.bootloader == "systemd-boot":
             decman.sh("bootctl is-installed >/dev/null 2>&1 || bootctl install")

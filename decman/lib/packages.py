@@ -9,7 +9,7 @@ from lib import SysModule
 # AUR packages that CachyOS ships prebuilt in its [cachyos] repo: on CachyOS
 # hosts they're installed with pacman instead of being built from the AUR.
 # `check.py --packages` flags new ones ("is in official repo cachyos").
-CACHYOS_PREBUILT = {"zen-browser-bin", "claude-code", "onlyoffice-bin"}
+CACHYOS_PREBUILT = {"zen-browser-bin", "claude-code", "onlyoffice-bin", "yay"}
 
 
 class PackageSet(SysModule):
