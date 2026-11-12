@@ -23,7 +23,8 @@ class Dev(PackageSet):
         # IDEs — TEMP: disabled for the VM test (huge builds), re-enable after
         # "rustrover", "rider", "intellij-idea-ultimate-edition",
         "claude-code",
-        "nls-bin",                 # `ls` alias (dotfiles/fish/conf.d/aliases.fish)
+        # TEMP: disabled during the VM test
+        # "nls-bin",                 # `ls` alias (dotfiles/fish/conf.d/aliases.fish)
         "flow-control-bin",
         "dotnet-sdk-preview-bin",  # .NET 11 (NixOS had dotnet-sdk_11); extra/ has only 10
     }
