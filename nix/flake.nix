@@ -3,10 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    kernel-nixpkgs.url = "github:NixOS/nixpkgs/148bab9";
-    # Only for discord: nixos-unstable's 1.0.166 hardcodes libopenh264 2.5.1,
-    # which Discord's web client deletes, breaking viewing others' streams.
-    # Drop once unstable has >= 1.0.168.
+    # Bleeding edge, for single packages: `pkgs.master.<name>` (overlays/).
+    # Only fetched/evaluated for packages that actually use it.
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
     home-manager = {
@@ -14,52 +12,36 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Apps that ship their own flake (packages.<system>.default).
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     nls.url = "github:nolight132/nls";
-
     sonora = {
       url = "github:sonorahq/sonora/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     wayzoomy.url = "github:nolight132/wayzoomy";
-
     ricture = {
       url = "github:imizgun/ricture";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
   };
 
-
-  outputs = { self, nixpkgs, home-manager, zen-browser, ... }@inputs:
+  outputs = { self, nixpkgs, ... }@inputs:
     let
-      # Each host names its own hostname/username here — that's the single
-      # place they're defined, everything else reads them via specialArgs.
+      # Each host names its hostname/username here — the single place they're
+      # defined; every module reads them as module arguments.
       mkHost = { hostname, username }:
         nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs hostname username; };
-          modules = [
-            ./hosts/${hostname}/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              # `dotfiles` = ../dotfiles of this repo: plain config files that
-              # modules/home/* link into place (shared with the future decman setup).
-              home-manager.extraSpecialArgs = { inherit inputs hostname username; dotfiles = ../dotfiles; };
-              home-manager.users.${username} = import ./modules/home/home.nix;
-              # Pre-existing plain files (from before this repo managed them) get
-              # renamed to *.hm-bak instead of aborting the switch.
-              home-manager.backupFileExtension = "hm-bak";
-            }
-          ];
+          specialArgs = {
+            inherit inputs hostname username;
+            # ../dotfiles of this repo: plain config files modules link into place.
+            dotfiles = ../dotfiles;
+          };
+          modules = [ ./hosts/${hostname} ];
         };
     in
     {
@@ -67,5 +49,15 @@
         nixos = mkHost { hostname = "nixos"; username = "vkabaczko"; };
         laptop = mkHost { hostname = "laptop"; username = "imizgun"; };
       };
+
+      # Own packages from pkgs/ (with the system's overlays applied), so they
+      # can be built/updated alone: `nix build .#deadlock-mod-manager`,
+      # `nix run nixpkgs#nix-update -- --flake deadlock-mod-manager`.
+      packages.x86_64-linux =
+        let pkgs = self.nixosConfigurations.nixos.pkgs; in
+        nixpkgs.lib.packagesFromDirectoryRecursive {
+          inherit (pkgs) callPackage;
+          directory = ./pkgs;
+        };
     };
 }

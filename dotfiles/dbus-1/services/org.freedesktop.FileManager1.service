@@ -1,7 +1,0 @@
-# Overrides the package's file (same name, higher priority in XDG_DATA_HOME) so
-# activation goes through nautilus.service — getting NAUTILUS_PERSIST — rather
-# than spawning a separate, short-lived instance.
-[D-BUS Service]
-Name=org.freedesktop.FileManager1
-Exec=/usr/bin/nautilus --gapplication-service
-SystemdService=nautilus.service

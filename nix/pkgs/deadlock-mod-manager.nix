@@ -27,16 +27,24 @@
   systemd,
   wayland,
   xdg-utils,
-  xorg,
+  libx11,
+  libxcb,
+  libxcomposite,
+  libxcursor,
+  libxdamage,
+  libxext,
+  libxfixes,
+  libxi,
+  libxrandr,
 }:
 
 stdenv.mkDerivation rec {
   pname = "deadlock-mod-manager";
-  version = "2.2.0";
+  version = "2.3.0";
 
   src = fetchurl {
     url = "https://github.com/deadlock-mod-manager/deadlock-mod-manager/releases/download/v${version}/Deadlock.Mod.Manager_${version}_amd64-cef.deb";
-    hash = "sha256-0VE8IDYYojhkKT58E3204ho7YpRJxn4G0Dadn0wOt0I=";
+    hash = "sha256-FoexX7wEtQLX+wMJagPy9Set8Dc4iXKYgQWoV2jP9Zg=";
   };
 
   nativeBuildInputs = [
@@ -61,13 +69,13 @@ stdenv.mkDerivation rec {
     nss
     openssl
     pango
-    xorg.libX11
-    xorg.libxcb
-    xorg.libXcomposite
-    xorg.libXdamage
-    xorg.libXext
-    xorg.libXfixes
-    xorg.libXrandr
+    libx11
+    libxcb
+    libxcomposite
+    libxdamage
+    libxext
+    libxfixes
+    libxrandr
   ];
 
   # chrome-sandbox is setuid, which the store forbids; drop it and let
@@ -93,10 +101,10 @@ stdenv.mkDerivation rec {
           systemd
           wayland
           libxkbcommon
-          xorg.libX11
-          xorg.libXcursor
-          xorg.libXi
-          xorg.libXrandr
+          libx11
+          libxcursor
+          libxi
+          libxrandr
         ]
       } \
       --prefix PATH : ${lib.makeBinPath [ xdg-utils ]} \

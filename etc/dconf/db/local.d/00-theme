@@ -1,8 +1,0 @@
-# system dconf defaults — managed by sys-cfg (decman/modules/theme/gtk.py)
-# Applied with `dconf update`; user-set values still take precedence.
-[org/gnome/desktop/interface]
-color-scheme='prefer-dark'
-gtk-theme='adw-gtk3-dark'
-icon-theme='Adwaita'
-cursor-theme='capitaine-cursors'
-cursor-size=24
