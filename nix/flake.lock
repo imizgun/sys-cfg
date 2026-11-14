@@ -289,15 +289,16 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1794357616,
-        "narHash": "sha256-JTGgTR6TENn1dtpk/7ZN3YsXpihjn7jSMN2gc4bK0e0=",
-        "owner": "nolight132",
+        "lastModified": 1794538710,
+        "narHash": "sha256-NBNONmF4TV4mR6dRdUueJ76XUeJUAwuX/m90Oo7v51A=",
+        "owner": "sonorahq",
         "repo": "sonora",
-        "rev": "7b1a45df64e43db8b4e330ee4e0198f7907e3f79",
+        "rev": "1a8c69fdd7a31feca8d12aa69b70d5debf358cf9",
         "type": "github"
       },
       "original": {
-        "owner": "nolight132",
+        "owner": "sonorahq",
+        "ref": "stable",
         "repo": "sonora",
         "type": "github"
       }

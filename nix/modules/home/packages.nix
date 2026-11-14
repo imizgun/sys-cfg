@@ -63,7 +63,7 @@
     loupe
     nautilus
     inputs.ricture.packages.${pkgs.system}.default
-    inputs.sonora.packages.${pkgs.system}.sonora-bin
+    inputs.sonora.packages.${pkgs.system}.default
     obs-studio
     mpv
     photocraft

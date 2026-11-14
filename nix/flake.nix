@@ -22,7 +22,7 @@
     nls.url = "github:nolight132/nls";
 
     sonora = {
-      url = "github:nolight132/sonora";
+      url = "github:sonorahq/sonora/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
