@@ -17,16 +17,21 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
     nls.url = "github:nolight132/nls";
+    
     sonora = {
       url = "github:sonorahq/sonora/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
     wayzoomy.url = "github:nolight132/wayzoomy";
+    
     ricture = {
       url = "github:imizgun/ricture";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
     millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
   };
 
