@@ -4,9 +4,19 @@
   programs.niri.enable = true;
   programs.xwayland.enable = true;
 
-  services.greetd.enable = true;
-  services.greetd.settings.default_session.command =
-    "${pkgs.tuigreet}/bin/tuigreet --remember --cmd niri-session";
+  # TUI display manager; niri shows up via programs.niri's wayland session.
+  # Remembers the last user/session by default (save = true).
+  services.displayManager.ly = {
+    enable = true;
+    settings = {
+      animation = "colormix";
+      # Nord: frost blue, aurora purple, polar night. Format 0xSSRRGGBB,
+      # SS = termbox styling byte (00 = plain color).
+      colormix_col1 = "0x005E81AC";
+      colormix_col2 = "0x00B48EAD";
+      colormix_col3 = "0x002E3440";
+    };
+  };
 
   # Required for Home Manager's gtk.colorScheme/theme/iconTheme
   # (theme/gtk.nix) to actually reach GTK/libadwaita apps like Nautilus —

@@ -51,5 +51,6 @@ in
     # Wayland screenshots
     slurp
     grim
+    wl-clipboard-rs
   ];
 }
