@@ -1,5 +1,20 @@
-{ pkgs, dotfiles, ... }:
+{ pkgs, dotfiles, hostname, ... }:
 
+let
+  # ly's colormix palette per host. Format 0xSSRRGGBB,
+  # SS = termbox styling byte (00 = plain color).
+  # The PC is `nixos` here (`mainpc` only in dotfiles/).
+  lyColors =
+    if hostname == "nixos" then {
+      colormix_col1 = "0x0014B8A6"; # teal
+      colormix_col2 = "0x0010B981"; # emerald
+      colormix_col3 = "0x00042F2E"; # deep teal
+    } else {
+      colormix_col1 = "0x005E81AC";
+      colormix_col2 = "0x00B48EAD";
+      colormix_col3 = "0x002E3440";
+    };
+in
 {
   programs.niri.enable = true;
   programs.xwayland.enable = true;
@@ -10,12 +25,7 @@
     enable = true;
     settings = {
       animation = "colormix";
-      # Nord: frost blue, aurora purple, polar night. Format 0xSSRRGGBB,
-      # SS = termbox styling byte (00 = plain color).
-      colormix_col1 = "0x005E81AC";
-      colormix_col2 = "0x00B48EAD";
-      colormix_col3 = "0x002E3440";
-    };
+    } // lyColors;
   };
 
   # Required for Home Manager's gtk.colorScheme/theme/iconTheme
