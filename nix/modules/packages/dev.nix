@@ -47,6 +47,7 @@ in
     ffmpeg
     flow-control
     inputs.nls.packages.${system}.default # `ls` alias (dotfiles/fish/conf.d/aliases.fish)
+    gdu
 
     # Wayland screenshots
     slurp
