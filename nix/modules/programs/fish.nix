@@ -10,7 +10,7 @@
     # aliases/functions stay here.
     shellAliases = {
       nix-rebuild = "nh os switch";            # build + diff + activate
-      nix-upgrade = "nh os switch --update";   # flake update, then the same
+      nix-update = "nh os switch --update";    # flake update, then the same
     };
     plugins = [
       {

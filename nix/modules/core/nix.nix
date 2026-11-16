@@ -1,8 +1,12 @@
 { inputs, username, ... }:
 
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.auto-optimise-store = true;
+  nix.settings = {
+    extra-substituters = [ "https://sonora.cachix.org" ];
+    extra-trusted-public-keys = [ "sonora.cachix.org-1:qbPeDsvZPbwUWHpQS5Oe0bjz5oHAVscHem+MCzwrc9Q=" ];
+    auto-optimise-store = true;
+    experimental-features = [ "nix-command" "flakes" ];
+  };
 
   nixpkgs.config.allowUnfree = true;
   # Package fixes, own packages (pkgs/), `pkgs.master` — see overlays/default.nix.
