@@ -11,6 +11,8 @@ in
     jetbrains.rider
     jetbrains.idea
     claude-code
+    t3code
+    yaak # patched, see overlays/fixes.nix
 
     # toolchains
     rustup

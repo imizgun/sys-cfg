@@ -28,4 +28,18 @@ final: prev: {
   espup = prev.espup.overrideAttrs (old: {
     buildInputs = old.buildInputs ++ [ final.aws-lc ];
   });
+
+  # cargoSetupHook forbids *-sys crates from building their vendored C
+  # libraries (LIBGIT2_NO_VENDOR=1, LIBSQLITE3_SYS_USE_PKG_CONFIG=1, ...), so
+  # they must find system ones through pkg-config — but nixpkgs' yaak lists
+  # neither, even though it pulls in git2/libgit2-sys and rusqlite/
+  # libsqlite3-sys. Without libgit2 the build aborts in libgit2-sys' build
+  # script; without sqlite it gets as far as linking and fails on -lsqlite3.
+  # Drop this once yaak in nixpkgs has both in its buildInputs.
+  yaak = prev.yaak.overrideAttrs (old: {
+    buildInputs = old.buildInputs ++ [
+      final.libgit2
+      final.sqlite
+    ];
+  });
 }
