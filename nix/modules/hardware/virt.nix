@@ -15,13 +15,17 @@
     };
   };
 
+  virtualisation.docker = {
+    enable = true;
+  };
+
   # USB passthrough to guests over SPICE without root.
   virtualisation.spiceUSBRedirection.enable = true;
 
   # Installs virt-manager and its dconf schemas system-wide.
   programs.virt-manager.enable = true;
 
-  users.users.${username}.extraGroups = [ "libvirtd" "kvm" ];
+  users.users.${username}.extraGroups = [ "libvirtd" "kvm" "docker" ];
 
   # virtiofsd on PATH too, for running it by hand
   hm.home.packages = [ pkgs.virtiofsd ];

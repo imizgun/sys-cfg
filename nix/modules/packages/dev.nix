@@ -48,6 +48,8 @@ in
     flow-control
     inputs.nls.packages.${system}.default # `ls` alias (dotfiles/fish/conf.d/aliases.fish)
     gdu
+    docker-compose
+    lazydocker
 
     # Wayland screenshots
     slurp

@@ -39,6 +39,9 @@
     ./programs/vicinae.nix
     ./programs/steam.nix
 
+    # services: background daemons
+    ./services/postgresql.nix
+
     # theme: appearance, shared across GTK/niri/cursor
     ./theme/gtk.nix
     ./theme/cursor.nix
