@@ -12,6 +12,7 @@ in
     jetbrains.idea
     claude-code
     t3code
+    stm32cubemx
     yaak # patched, see overlays/fixes.nix
 
     # toolchains
