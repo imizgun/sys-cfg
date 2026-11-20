@@ -30,6 +30,7 @@
 
     # programs: tools with their own config
     ./programs/fish.nix
+    ./programs/zoxide.nix
     ./programs/ghostty.nix
     ./programs/nautilus.nix
     ./programs/helix.nix
