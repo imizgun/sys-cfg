@@ -53,6 +53,7 @@ in
     gdu
     docker-compose
     lazydocker
+    fastfetch
 
     # Wayland screenshots
     slurp
