@@ -108,7 +108,6 @@ stdenv.mkDerivation rec {
         ]
       } \
       --prefix PATH : ${lib.makeBinPath [ xdg-utils ]} \
-      --unset GDK_SCALE \
       --add-flags --disable-auto-update
 
     runHook postInstall

@@ -19,18 +19,4 @@
       extraLibs = _: [ ];
     })
   ];
-
-  # Same story as programs/steam.nix: niri sets GDK_SCALE=2 session-wide
-  # (dotfiles/niri/cfg/misc.kdl), but the PC's monitor is 1x, so the Hub and
-  # the editors it launches (they inherit its env) render 2x too big.
-  # Shadows the package's own unityhub.desktop.
-  hm.xdg.desktopEntries.unityhub = {
-    name = "Unity Hub";
-    comment = "The Official Unity Hub";
-    exec = "env GDK_SCALE=1 unityhub %U";
-    icon = "unityhub";
-    terminal = false;
-    categories = [ "Development" ];
-    mimeType = [ "x-scheme-handler/unityhub" ];
-  };
 }
