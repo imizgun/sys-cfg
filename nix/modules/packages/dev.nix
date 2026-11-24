@@ -54,6 +54,7 @@ in
     docker-compose
     lazydocker
     fastfetch
+    file
 
     # Wayland screenshots
     slurp
