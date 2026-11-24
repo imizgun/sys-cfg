@@ -55,6 +55,8 @@ in
     lazydocker
     fastfetch
     file
+    syswatch
+    bottom
 
     # Wayland screenshots
     slurp
